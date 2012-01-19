@@ -80,7 +80,7 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		self.rubber.reset()
 		nItems = self.layer.selectedFeatureCount()
 		if nItems == 0:	return
-		if nItems > 1:  self.setVisible(True)
+		if nItems > 0:  self.setVisible(True) # set to 1 ?
 		self.browseFrame.setEnabled(True)
 		self.subset = self.layer.selectedFeaturesIds()
 		l = 0
@@ -129,7 +129,7 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 	def on_listCombo_currentIndexChanged(self,i):
 		item = self.getCurrentItem()
 		if item is False:
-			self.emit(SIGNAL("browserNoItem()"))
+			self.emit(SIGNAL("browserNoItem(QgsVectorLayer)"),self.layer)
 			return
 		# update rubber band
 		self.rubber.reset()
