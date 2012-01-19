@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_itembrowser.ui'
 #
-# Created: Thu Jan 19 14:00:54 2012
+# Created: Thu Jan 19 15:15:34 2012
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_itembrowser(object):
     def setupUi(self, itembrowser):
         itembrowser.setObjectName(_fromUtf8("itembrowser"))
-        itembrowser.resize(266, 154)
+        itembrowser.resize(271, 120)
         itembrowser.setWindowTitle(_fromUtf8("qWat :: item browser"))
         self.dockWidgetContents = QtGui.QWidget()
         self.dockWidgetContents.setObjectName(_fromUtf8("dockWidgetContents"))
