@@ -1,0 +1,17 @@
+
+
+This plugin allows you to browse a multiple selection in QGIS.
+
+First, connect the layers by clicking the "plug" icons or the corresponding menu entry. Choose the layers to be connected and validate.
+
+Try to select *several* features and see at the bottom left of QGIS a dialog to browse your selection.
+Choose the color you want for the selection. Open view/edit form with "pen" icon.
+
+
+For developers:
+
+If you want something to happen with the selection, the plugin emits two signals as soon as the selection changed:
+browserCurrentItem(QgsVectorLayer,QgsFeatureId) if there is a selection
+browserNoItem(QgsVectorLayer) if there is nothing selected
+
+
