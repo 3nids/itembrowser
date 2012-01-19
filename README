@@ -4,7 +4,7 @@ This plugin allows you to browse a multiple selection in QGIS.
 
 First, connect the layers by clicking the "plug" icons or the corresponding menu entry. Choose the layers to be connected and validate.
 
-Try to select *several* features and see at the bottom left of QGIS a dialog to browse your selection.
+Try to select features and see at the bottom left of QGIS a dialog to browse your selection.
 Open view/edit form with "pen" icon.
 
 In the settings, you can set the color and width of the rubber band, and the scaling regarding to the bounding box of the current item.
@@ -12,6 +12,8 @@ In the settings, you can set the color and width of the rubber band, and the sca
 The connected layers info is kept in the project. As soon as you reload the project, the layers are connected.
 
 For a live demo: http://www.youtube.com/watch?v=f2-wlgfo1jU&hd=1
+
+Last version can be found at https://github.com/3nids/itembrowser
 
 For developers:
 
