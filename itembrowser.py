@@ -27,6 +27,8 @@ class itemBrowser():
 		# Save reference to the QGIS interface
 		self.iface = iface
 		self.layers = {}
+		# run connection when new layers are loaded
+		QObject.connect(self.iface.mapCanvas() , SIGNAL("layersChanged ()") , self.connect ) 
 		
 	def initGui(self):
 		self.connectLayersDlg = connectLayers(self.iface)
@@ -36,8 +38,6 @@ class itemBrowser():
 		QObject.connect(self.connectLayersDlg,   SIGNAL("accepted()"),  self.connect)
 		self.iface.addToolBarIcon(self.connectLayerAction)
 		self.iface.addPluginToMenu("&Item Browser", self.connectLayerAction)
-		# run connection when plugin started
-		self.connect()
 				
 	def unload(self):
 		# Remove the plugin menu item and icon
