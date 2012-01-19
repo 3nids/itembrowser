@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>271</width>
+    <width>265</width>
     <height>120</height>
    </rect>
   </property>
@@ -121,7 +121,7 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0" colspan="4">
+       <item row="1" column="0" colspan="5">
         <widget class="QCheckBox" name="zoomCheck">
          <property name="text">
           <string>zoom to current item</string>
@@ -142,27 +142,6 @@
          <property name="icon">
           <iconset>
            <normaloff>icons/edit.png</normaloff>icons/edit.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="4">
-        <widget class="QToolButton" name="colorButton">
-         <property name="font">
-          <font>
-           <stylestrategy>PreferDefault</stylestrategy>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string notr="true"/>
-         </property>
-         <property name="autoFillBackground">
-          <bool>false</bool>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
-         <property name="text">
-          <string notr="true"/>
          </property>
         </widget>
        </item>

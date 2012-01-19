@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_itembrowser.ui'
 #
-# Created: Thu Jan 19 15:15:34 2012
+# Created: Thu Jan 19 16:05:06 2012
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_itembrowser(object):
     def setupUi(self, itembrowser):
         itembrowser.setObjectName(_fromUtf8("itembrowser"))
-        itembrowser.resize(271, 120)
+        itembrowser.resize(265, 120)
         itembrowser.setWindowTitle(_fromUtf8("qWat :: item browser"))
         self.dockWidgetContents = QtGui.QWidget()
         self.dockWidgetContents.setObjectName(_fromUtf8("dockWidgetContents"))
@@ -78,7 +78,7 @@ class Ui_itembrowser(object):
         self.zoomCheck = QtGui.QCheckBox(self.browseFrame)
         self.zoomCheck.setText(QtGui.QApplication.translate("itembrowser", "zoom to current item", None, QtGui.QApplication.UnicodeUTF8))
         self.zoomCheck.setObjectName(_fromUtf8("zoomCheck"))
-        self.gridLayout_2.addWidget(self.zoomCheck, 1, 0, 1, 4)
+        self.gridLayout_2.addWidget(self.zoomCheck, 1, 0, 1, 5)
         self.editFormButton = QtGui.QToolButton(self.browseFrame)
         self.editFormButton.setToolTip(_fromUtf8(""))
         self.editFormButton.setAccessibleDescription(_fromUtf8(""))
@@ -88,16 +88,6 @@ class Ui_itembrowser(object):
         self.editFormButton.setIcon(icon)
         self.editFormButton.setObjectName(_fromUtf8("editFormButton"))
         self.gridLayout_2.addWidget(self.editFormButton, 1, 5, 1, 1)
-        self.colorButton = QtGui.QToolButton(self.browseFrame)
-        font = QtGui.QFont()
-        font.setStyleStrategy(QtGui.QFont.PreferDefault)
-        self.colorButton.setFont(font)
-        self.colorButton.setToolTip(_fromUtf8(""))
-        self.colorButton.setAutoFillBackground(False)
-        self.colorButton.setStyleSheet(_fromUtf8(""))
-        self.colorButton.setText(_fromUtf8(""))
-        self.colorButton.setObjectName(_fromUtf8("colorButton"))
-        self.gridLayout_2.addWidget(self.colorButton, 1, 4, 1, 1)
         self.gridLayout_3.addWidget(self.browseFrame, 0, 0, 1, 1)
         itembrowser.setWidget(self.dockWidgetContents)
 

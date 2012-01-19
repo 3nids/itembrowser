@@ -16,6 +16,7 @@ import resources
 
 from ui_itembrowser import Ui_itembrowser
 from connectlayers import connectLayers
+from settings import settings
 
 try:
     _fromUtf8 = QString.fromUtf8
@@ -34,27 +35,38 @@ class itemBrowser():
 		self.connectLayersDlg = connectLayers(self.iface)
 		# CONNECTLAYERS
 		self.connectLayerAction = QAction(QIcon(":/plugins/itembrowser/icons/connect.png"), "connect layers", self.iface.mainWindow())
-		QObject.connect(self.connectLayerAction, SIGNAL("triggered()"), self.connectLayersDlg.exec_)
-		QObject.connect(self.connectLayersDlg,   SIGNAL("accepted()"),  self.connect)
+		QObject.connect(self.connectLayerAction, SIGNAL("triggered()")       , self.connectLayersDlg.exec_)
+		QObject.connect(self.connectLayersDlg,   SIGNAL("layerListUpdated()"), self.connect)
 		self.iface.addToolBarIcon(self.connectLayerAction)
 		self.iface.addPluginToMenu("&Item Browser", self.connectLayerAction)
+		# settings
+		self.uisettings = settings(self.iface)
+		self.uisettingsAction = QAction("settings", self.iface.mainWindow())
+		QObject.connect(self.uisettingsAction, SIGNAL("triggered()"), self.uisettings.exec_)
+		self.iface.addPluginToMenu("&Item Browser", self.uisettingsAction)	
 				
 	def unload(self):
 		# Remove the plugin menu item and icon
 		self.iface.removePluginMenu("&Item Browser",self.connectLayerAction)
+		self.iface.removePluginMenu("&Item Browser",self.uisettingsAction)
 		self.iface.removeToolBarIcon(self.connectLayerAction)
 		
 	def connect(self):
 		for layer in self.iface.mapCanvas().layers():
+			if self.layers.has_key(layer.id): print layer.name()
 			if layer.customProperty("itemBrowserConnected", "no").toString() == "yes":
 				self.layers[layer.id()] = layerItemBrowser( self.iface , layer )
-			elif self.layers.has_key(layer.id):
-				QObject.disconnect(self.layer , SIGNAL("selectionChanged ()"), self.layers.get(layer.id()).selectionChanged )	
+			elif self.layers.has_key(layer.id()):
+				QObject.disconnect(layer , SIGNAL("selectionChanged ()"), self.layers.get(layer.id()).selectionChanged )
+				self.layers.get(layer.id()).unload()
+				self.layers.pop(layer.id())	
+	
 
 class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 	def __init__(self,iface,layer):
 		self.iface = iface
 		self.layer = layer
+		self.settings = QSettings("ItemBrowser","ItemBrowser")
 		# UI setup
 		QDockWidget.__init__(self)
 		self.setupUi(self)
@@ -69,7 +81,6 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		self.symbol = QgsLineSymbolV2()
 		self.symbol.setColor( QColor(255,0,0,255) )
 		self.symbol.setWidth( 1.3 )
-		self.applySymbolStyle()
 		
 	def unload(self):
 		self.iface.removeDockWidget(self)
@@ -95,7 +106,7 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		
 	def zoomToItem(self,item):
 		bobo = item.geometry().boundingBox()
-		bobo.scale(5)
+		bobo.scale( self.settings.value("scale",5).toInt()[0] )
 		self.iface.mapCanvas().setExtent(bobo)
 		self.iface.mapCanvas().refresh()	
 
@@ -106,12 +117,6 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		self.layer.featureAtId(self.subset[i],item)
 		return item	
 		
-	def applySymbolStyle(self):
-		color = self.symbol.color()
-		self.rubber.setColor(color)
-		self.rubber.setWidth(self.symbol.width())
-		self.colorButton.setStyleSheet("background-color: rgb(%u,%u,%u)" % (color.red(),color.green(),color.blue()))	
-
 	@pyqtSignature("on_previousButton_clicked()")
 	def on_previousButton_clicked(self):
 		i = self.listCombo.currentIndex()
@@ -133,6 +138,13 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 			return
 		# update rubber band
 		self.rubber.reset()
+		width = self.settings.value("rubber_width",2).toDouble()[0]
+		colorR = self.settings.value("rubber_colorR",255).toInt()[0]
+		colorG = self.settings.value("rubber_colorG",0  ).toInt()[0]
+		colorB = self.settings.value("rubber_colorB",0  ).toInt()[0]
+		color  = QColor(colorR,colorG,colorB,255)
+		self.rubber.setColor(color)
+		self.rubber.setWidth(width)
 		self.rubber.addGeometry(item.geometry(),self.layer)
 		# zoom to item
 		if self.zoomCheck.isChecked():
@@ -154,8 +166,4 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 	def on_editFormButton_clicked(self):
 		# launch edit form
 		self.iface.openFeatureForm(self.layer, self.getCurrentItem() )
-			
-	@pyqtSignature("on_colorButton_clicked()")
-	def on_colorButton_clicked(self):
-		if QgsSymbolV2PropertiesDialog(self.symbol,self.layer).exec_():
-			self.applySymbolStyle()
+		

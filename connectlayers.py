@@ -43,3 +43,4 @@ class connectLayers(QDialog, Ui_connectlayers ):
 				layer.setCustomProperty("itemBrowserConnected", "yes")
 			else:
 				layer.setCustomProperty("itemBrowserConnected", "no")
+		QObject.emit(self , SIGNAL("layerListUpdated()") )
