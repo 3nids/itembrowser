@@ -152,7 +152,7 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		# Update browser
 		self.currentPosLabel.setText('%u/%u' % (i+1,len(self.subset)) )
 		# emit signal
-		self.layer.emit(SIGNAL("browserCurrentItem(QgsFeatureId)"),item.id())
+		self.layer.emit(SIGNAL("browserCurrentItem(int)"),item.id())
 		
 	@pyqtSignature("on_zoomCheck_stateChanged(int)")
 	def on_zoomCheck_stateChanged(self,i):
