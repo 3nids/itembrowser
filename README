@@ -17,8 +17,8 @@ Last version can be found at https://github.com/3nids/itembrowser
 
 For developers:
 
-If you want something to happen with the selection, the plugin emits two signals as soon as the selection changed:
-browserCurrentItem(QgsVectorLayer,QgsFeatureId) if there is a selection
-browserNoItem(QgsVectorLayer) if there is nothing selected
+If you want something to happen with the selection, the connected layer emits two signals as soon as the selection changed:
+browserCurrentItem(QgsFeatureId) if there is a selection
+browserNoItem() if there is nothing selected
 
 

@@ -134,7 +134,7 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 	def on_listCombo_currentIndexChanged(self,i):
 		item = self.getCurrentItem()
 		if item is False:
-			self.emit(SIGNAL("browserNoItem(QgsVectorLayer)"),self.layer)
+			self.layer.emit(SIGNAL("browserNoItem()"))
 			return
 		# update rubber band
 		self.rubber.reset()
@@ -152,7 +152,7 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		# Update browser
 		self.currentPosLabel.setText('%u/%u' % (i+1,len(self.subset)) )
 		# emit signal
-		self.emit(SIGNAL("browserCurrentItem(QgsVectorLayer,QgsFeatureId)"),self.layer,item.id())
+		self.layer.emit(SIGNAL("browserCurrentItem(QgsFeatureId)"),item.id())
 		
 	@pyqtSignature("on_zoomCheck_stateChanged(int)")
 	def on_zoomCheck_stateChanged(self,i):
