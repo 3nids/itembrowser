@@ -136,16 +136,17 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		if item is False:
 			self.layer.emit(SIGNAL("browserNoItem()"))
 			return
-		# update rubber band
+		# update rubber band (only if more than 1 item is selected)
 		self.rubber.reset()
-		width = self.settings.value("rubber_width",2).toDouble()[0]
-		colorR = self.settings.value("rubber_colorR",255).toInt()[0]
-		colorG = self.settings.value("rubber_colorG",0  ).toInt()[0]
-		colorB = self.settings.value("rubber_colorB",0  ).toInt()[0]
-		color  = QColor(colorR,colorG,colorB,255)
-		self.rubber.setColor(color)
-		self.rubber.setWidth(width)
-		self.rubber.addGeometry(item.geometry(),self.layer)
+		if self.listCombo.count() > 1:
+			width = self.settings.value("rubber_width",2).toDouble()[0]
+			colorR = self.settings.value("rubber_colorR",255).toInt()[0]
+			colorG = self.settings.value("rubber_colorG",0  ).toInt()[0]
+			colorB = self.settings.value("rubber_colorB",0  ).toInt()[0]
+			color  = QColor(colorR,colorG,colorB,255)
+			self.rubber.setColor(color)
+			self.rubber.setWidth(width)
+			self.rubber.addGeometry(item.geometry(),self.layer)
 		# zoom to item
 		if self.zoomCheck.isChecked():
 			self.zoomToItem(item)

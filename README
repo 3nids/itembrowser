@@ -24,6 +24,7 @@ browserNoItem() if there is nothing selected
 
 
 Changelog:
+1.0.2: - do not put in rubber band if only one item is selected
 1.0.1: - signal is now emitted by the layer, corrected slot
        - completed metadata
 
