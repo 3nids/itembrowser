@@ -12,7 +12,7 @@ version=1.0.1
 qgisMinimumVersion=1.7
 
 tags=item browser, feature browser, multiple selection,browser,selection
-homepagehttp://hub.qgis.org/projects/itembrowser
+homepage=http://hub.qgis.org/projects/itembrowser
 tracker=http://hub.qgis.org/projects/itembrowser/issues
 repository=https://github.com/3nids/itembrowser
 [author]
