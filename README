@@ -18,7 +18,13 @@ Last version can be found at https://github.com/3nids/itembrowser
 For developers:
 
 If you want something to happen with the selection, the connected layer emits two signals as soon as the selection changed:
-browserCurrentItem(QgsFeatureId) if there is a selection
+browserCurrentItem(int) if there is a selection
 browserNoItem() if there is nothing selected
+
+
+
+Changelog:
+1.0.1: - signal is now emitted by the layer, corrected slot
+       - completed metadata
 
 
