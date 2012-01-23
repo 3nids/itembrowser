@@ -77,7 +77,7 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		QObject.connect(self.layer , SIGNAL("selectionChanged ()"), self.selectionChanged )
 		# create rubber band to emphasis the current selected item (over the whole selection)
 		self.rubber = QgsRubberBand(self.iface.mapCanvas())
-		
+				
 	def unload(self):
 		self.iface.removeDockWidget(self)
 		
