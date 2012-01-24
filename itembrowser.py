@@ -86,7 +86,10 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		self.cleanBrowserFields()
 		self.rubber.reset()
 		nItems = self.layer.selectedFeatureCount()
-		if nItems == 0:	return
+		if nItems == 0:	
+			self.setVisible(False)
+			self.layer.emit(SIGNAL("browserNoItem()"))
+			return
 		if nItems > 0:  self.setVisible(True) # set to 1 ?
 		self.browseFrame.setEnabled(True)
 		self.subset = self.layer.selectedFeaturesIds()
@@ -129,9 +132,7 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 	@pyqtSignature("on_listCombo_currentIndexChanged(int)")
 	def on_listCombo_currentIndexChanged(self,i):
 		item = self.getCurrentItem()
-		if item is False:
-			self.layer.emit(SIGNAL("browserNoItem()"))
-			return
+		if item is False: return
 		# update rubber band (only if more than 1 item is selected)
 		self.rubber.reset()
 		if self.listCombo.count() > 1:
