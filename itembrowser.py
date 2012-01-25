@@ -52,8 +52,7 @@ class itemBrowser():
 		self.iface.removeToolBarIcon(self.connectLayerAction)
 		
 	def connect(self):
-		for layer in self.iface.mapCanvas().layers():
-			if self.layers.has_key(layer.id): print layer.name()
+		for layer in self.iface.legendInterface().layers():
 			if layer.customProperty("itemBrowserConnected", "no").toString() == "yes":
 				self.layers[layer.id()] = layerItemBrowser( self.iface , layer )
 			elif self.layers.has_key(layer.id()):
@@ -136,6 +135,7 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		# update rubber band (only if more than 1 item is selected)
 		self.rubber.reset()
 		if self.listCombo.count() > 1:
+			print 1
 			width = self.settings.value("rubber_width",2).toDouble()[0]
 			colorR = self.settings.value("rubber_colorR",255).toInt()[0]
 			colorG = self.settings.value("rubber_colorG",0  ).toInt()[0]

@@ -27,7 +27,7 @@ class connectLayers(QDialog, Ui_connectlayers ):
 				
 	def showEvent(self, e):
 		self.layerList.clear()
-		self.layers = self.iface.mapCanvas().layers()
+		self.layers = self.iface.legendInterface().layers()
 		for layer in self.layers:
 			item = QListWidgetItem()
 			item.setText(layer.name())
