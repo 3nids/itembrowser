@@ -135,7 +135,6 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		# update rubber band (only if more than 1 item is selected)
 		self.rubber.reset()
 		if self.listCombo.count() > 1:
-			print 1
 			width = self.settings.value("rubber_width",2).toDouble()[0]
 			colorR = self.settings.value("rubber_colorR",255).toInt()[0]
 			colorG = self.settings.value("rubber_colorG",0  ).toInt()[0]
