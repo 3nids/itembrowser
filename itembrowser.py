@@ -70,6 +70,9 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		QDockWidget.__init__(self)
 		self.setupUi(self)
 		self.setWindowTitle(layer.name())
+		if layer.hasGeometryType() is False:
+			self.zoomCheck.setChecked(False)
+			self.zoomCheck.setEnabled(False)
 		self.iface.addDockWidget(Qt.LeftDockWidgetArea,self)
 		self.setVisible(False)
 		# Connect SIGNAL
