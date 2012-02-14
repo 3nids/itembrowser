@@ -28,6 +28,7 @@ class settings(QDialog, Ui_Settings ):
 		# load settings
 		self.settings = QSettings("ItemBrowser","ItemBrowser")
 		
+		self.saveSelectionBox.setChecked( self.settings.value("saveSelectionInProject",  1).toInt()[0] )
 		self.scaleSpin.setValue(  self.settings.value("scale",5).toInt()[0])
 		self.rubberWidth.setValue(self.settings.value("rubber_width",2).toDouble()[0])
 		self.colorR = self.settings.value("rubber_colorR",255).toInt()[0]
@@ -37,6 +38,7 @@ class settings(QDialog, Ui_Settings ):
 		self.applyColorStyle()
 
 	def applySettings(self):
+		self.settings.setValue( "saveSelectionInProject" , int(self.saveSelectionBox.isChecked()) )
 		self.settings.setValue( "scale" , self.scaleSpin.value() )
 		self.settings.setValue( "rubber_width"   , self.rubberWidth.value() )	
 		self.settings.setValue( "rubber_colorR"  , self.color.red() )

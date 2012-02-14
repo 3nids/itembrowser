@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>224</width>
-    <height>144</height>
+    <width>281</width>
+    <height>205</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Triangulation :: settings</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="4" column="0" colspan="4">
+   <item row="5" column="0" colspan="4">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -24,7 +24,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="3">
+   <item row="2" column="3">
     <widget class="QDoubleSpinBox" name="rubberWidth">
      <property name="toolTip">
       <string extracomment="Width of the selected distance circles used for triangulation."/>
@@ -40,7 +40,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="3">
+   <item row="3" column="3">
     <widget class="QPushButton" name="rubberColor">
      <property name="toolTip">
       <string extracomment="Color of the selected distance circles used for triangulation."/>
@@ -50,28 +50,28 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="3">
+   <item row="2" column="0" colspan="3">
     <widget class="QLabel" name="label_2">
      <property name="text">
       <string>Rubberband size</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
       <string>Rubberband color</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="0">
+   <item row="1" column="0">
     <widget class="QLabel" name="label_3">
      <property name="text">
       <string>Scaling</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="3">
+   <item row="1" column="3">
     <widget class="QSpinBox" name="scaleSpin">
      <property name="minimum">
       <number>1</number>
@@ -81,6 +81,16 @@
      </property>
      <property name="value">
       <number>5</number>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="4">
+    <widget class="QCheckBox" name="saveSelectionBox">
+     <property name="text">
+      <string>save selection in project</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
