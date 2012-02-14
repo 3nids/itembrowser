@@ -10,6 +10,7 @@ You can open the view/edit form with the "pen" icon.
 In the settings, you can set the color and width of the rubber band, and the scaling regarding to the bounding box of the current item.
 
 The connected layers info is kept in the project. As soon as you reload the project, the layers are connected.
+You can also save the current selection, this is enabled by default. If you are browsing a large selection, it allows you to re-start at the same feature.
 
 For a live demo: http://www.youtube.com/watch?v=f2-wlgfo1jU&hd=1
 
@@ -24,6 +25,8 @@ browserNoItem() if there is nothing selected
 
 
 Changelog:
+1.1  : - current selection can now be saved in project
+       - the list of layers is generated from the legend and not from the canvas (i.e. even undisplayed layers can be connected)
 1.0.2: - hide widget if no item is selected
        - do not put in rubber band if only one item is selected
 1.0.1: - signal is now emitted by the layer, corrected slot
