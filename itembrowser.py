@@ -55,7 +55,13 @@ class itemBrowser():
 		for layer in self.iface.legendInterface().layers():
 			if layer.customProperty("itemBrowserConnected", "no").toString() == "yes":
 				self.layers[layer.id()] = layerItemBrowser( self.iface , layer )
-			elif self.layers.has_key(layer.id()):
+				if QSettings("ItemBrowser","ItemBrowser").value("saveSelectionInProject", 1 ).toInt()[0] == 1 and layer.selectedFeatureCount() == 0:
+					exec("selection = %s" % layer.customProperty("itemBrowserSelection","[]").toString() )
+					if len(selection)>0: 
+						i = layer.customProperty("itemBrowserCurrentItem",0).toInt()[0]
+						layer.setSelectedFeatures(selection)
+						self.layers[layer.id()].listCombo.setCurrentIndex(i)
+			elif self.layers.has_key(layer.id()): # if the layer is removed and was previously connected
 				QObject.disconnect(layer , SIGNAL("selectionChanged ()"), self.layers.get(layer.id()).selectionChanged )
 				self.layers.get(layer.id()).unload()
 				self.layers.pop(layer.id())	
@@ -89,12 +95,17 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		self.rubber.reset()
 		nItems = self.layer.selectedFeatureCount()
 		if nItems == 0:	
+			if self.settings.value("saveSelectionInProject", 1 ).toInt()[0] == 1:
+				self.layer.setCustomProperty("itemBrowserSelection",repr("[]"))
 			self.setVisible(False)
 			self.layer.emit(SIGNAL("browserNoItem()"))
 			return
 		if nItems > 0:  self.setVisible(True) # set to 1 ?
 		self.browseFrame.setEnabled(True)
 		self.subset = self.layer.selectedFeaturesIds()
+		if self.settings.value("saveSelectionInProject", 1 ).toInt()[0] == 1:
+			self.layer.setCustomProperty("itemBrowserSelection",repr(self.subset))
+			self.layer.setCustomProperty("itemBrowserCurrentItem",0)
 		l = 0
 		for id in self.subset:
 			self.listCombo.addItem(_fromUtf8(""))
@@ -135,6 +146,8 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 	def on_listCombo_currentIndexChanged(self,i):
 		item = self.getCurrentItem()
 		if item is False: return
+		if self.settings.value("saveSelectionInProject", 1 ).toInt()[0] == 1:
+			self.layer.setCustomProperty("itemBrowserCurrentItem",i)
 		# update rubber band (only if more than 1 item is selected)
 		self.rubber.reset()
 		if self.listCombo.count() > 1:
