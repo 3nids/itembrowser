@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_connectlayers.ui'
 #
-# Created: Thu Jan 19 14:51:08 2012
+# Created: Tue Feb 14 10:58:10 2012
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -18,7 +18,7 @@ class Ui_connectlayers(object):
     def setupUi(self, connectlayers):
         connectlayers.setObjectName(_fromUtf8("connectlayers"))
         connectlayers.resize(261, 430)
-        connectlayers.setWindowTitle(QtGui.QApplication.translate("connectlayers", "Dialog", None, QtGui.QApplication.UnicodeUTF8))
+        connectlayers.setWindowTitle(QtGui.QApplication.translate("connectlayers", "Item Browser :: Connect layers", None, QtGui.QApplication.UnicodeUTF8))
         self.gridLayout = QtGui.QGridLayout(connectlayers)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.layerList = QtGui.QListWidget(connectlayers)
