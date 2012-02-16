@@ -34,7 +34,7 @@ class itemBrowser():
 	def initGui(self):
 		self.connectLayersDlg = connectLayers(self.iface)
 		# CONNECTLAYERS
-		self.connectLayerAction = QAction(QIcon(":/plugins/itembrowser/icons/connect.png"), "connect layers", self.iface.mainWindow())
+		self.connectLayerAction = QAction(QIcon(":/plugins/itembrowser/icons/connect.png"), "connect layers to item browser", self.iface.mainWindow())
 		QObject.connect(self.connectLayerAction, SIGNAL("triggered()")       , self.connectLayersDlg.exec_)
 		QObject.connect(self.connectLayersDlg,   SIGNAL("layerListUpdated()"), self.connect)
 		self.iface.addToolBarIcon(self.connectLayerAction)
