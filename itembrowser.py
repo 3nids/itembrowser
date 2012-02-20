@@ -118,6 +118,10 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		
 	def zoomToItem(self,item):
 		bobo = item.geometry().boundingBox()
+		if bobo.width() == 0 or bobo.height()==0:
+			x = bobo.center().x()
+			y = bobo.center().y()
+			bobo.set(x-5,y-5,x+5,y+5)			
 		bobo.scale( self.settings.value("scale",5).toInt()[0] )
 		self.iface.mapCanvas().setExtent(bobo)
 		self.iface.mapCanvas().refresh()	
