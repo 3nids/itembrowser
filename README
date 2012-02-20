@@ -25,6 +25,7 @@ browserNoItem() if there is nothing selected
 
 
 Changelog:
+1.2  : - handles the map extent while browsing points
 1.1  : - current selection can now be saved in project
        - the list of layers is generated from the legend and not from the canvas (i.e. even undisplayed layers can be connected)
 1.0.2: - hide widget if no item is selected
