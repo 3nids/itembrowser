@@ -176,6 +176,7 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		if self.zoomCheck.isChecked():
 			# Extract item
 			item = self.getCurrentItem()
+			if item is False: return
 			# zoom
 			self.zoomToItem(item)
 
