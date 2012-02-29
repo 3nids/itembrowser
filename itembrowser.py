@@ -75,7 +75,7 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		# UI setup
 		QDockWidget.__init__(self)
 		self.setupUi(self)
-		self.setWindowTitle(layer.name())
+		self.setWindowTitle("ItemBrowser: %s" % layer.name())
 		if layer.hasGeometryType() is False:
 			self.zoomCheck.setChecked(False)
 			self.zoomCheck.setEnabled(False)
