@@ -54,18 +54,22 @@ class itemBrowser():
 	def connect(self):
 		for layer in self.iface.legendInterface().layers():
 			if layer.customProperty("itemBrowserConnected", "no").toString() == "yes":
+				if self.layers.has_key(layer.id()):	continue
 				self.layers[layer.id()] = layerItemBrowser( self.iface , layer )
+				QObject.connect(self.layers[layer.id()],SIGNAL("layerDeleted(QgsMapLayer)"),self.disconnectLayer)
 				if QSettings("ItemBrowser","ItemBrowser").value("saveSelectionInProject", 1 ).toInt()[0] == 1 and layer.selectedFeatureCount() == 0:
 					exec("selection = %s" % layer.customProperty("itemBrowserSelection","[]").toString() )
 					if len(selection)>0: 
 						i = layer.customProperty("itemBrowserCurrentItem",0).toInt()[0]
 						layer.setSelectedFeatures(selection)
 						self.layers[layer.id()].listCombo.setCurrentIndex(i)
-			elif self.layers.has_key(layer.id()): # if the layer is removed and was previously connected
+			elif self.layers.has_key(layer.id()): 
+				# if the layer is disconnected but was previously connected
 				QObject.disconnect(layer , SIGNAL("selectionChanged ()"), self.layers.get(layer.id()).selectionChanged )
-				self.layers.get(layer.id()).unload()
-				self.layers.pop(layer.id())	
-	
+				self.disconnectLayer(layer)
+				
+	def disconnectLayer(self,layer):
+		self.layers.pop(layer.id())	
 
 class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 	def __init__(self,iface,layer):
@@ -84,11 +88,14 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		self.setVisible(False)
 		# Connect SIGNAL
 		QObject.connect(self.layer , SIGNAL("selectionChanged ()"), self.selectionChanged )
+		QObject.connect(self.layer , SIGNAL("layerDeleted()") , self.unload )
 		# create rubber band to emphasis the current selected item (over the whole selection)
 		self.rubber = QgsRubberBand(self.iface.mapCanvas())
 				
 	def unload(self):
+		self.rubber.reset()
 		self.iface.removeDockWidget(self)
+		self.emit(SIGNAL("layerDeleted(QgsMapLayer)"),self.layer)
 		
 	def selectionChanged(self):
 		self.browseFrame.setEnabled(False)
