@@ -80,6 +80,7 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 			self.zoomCheck.setChecked(False)
 			self.zoomCheck.setEnabled(False)
 		self.iface.addDockWidget(Qt.LeftDockWidgetArea,self)
+		self.browseFrame.setEnabled(False)
 		self.setVisible(False)
 		# Connect SIGNAL
 		QObject.connect(self.layer , SIGNAL("selectionChanged ()"), self.selectionChanged )
