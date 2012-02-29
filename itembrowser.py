@@ -63,6 +63,7 @@ class itemBrowser():
 						i = layer.customProperty("itemBrowserCurrentItem",0).toInt()[0]
 						layer.setSelectedFeatures(selection)
 						self.layers[layer.id()].listCombo.setCurrentIndex(i)
+				self.layers[layer.id()].selectionChanged()
 			elif self.layers.has_key(layer.id()): 
 				# if the layer is disconnected but was previously connected
 				QObject.disconnect(layer , SIGNAL("selectionChanged ()"), self.layers.get(layer.id()).selectionChanged )
