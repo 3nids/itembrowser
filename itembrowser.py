@@ -67,6 +67,7 @@ class itemBrowser():
 			elif self.layers.has_key(layer.id()): 
 				# if the layer is disconnected but was previously connected
 				QObject.disconnect(layer , SIGNAL("selectionChanged ()"), self.layers.get(layer.id()).selectionChanged )
+				self.layers[layer.id()].unload()
 				self.disconnectLayer(layer)
 				
 	def disconnectLayer(self,layer):
@@ -90,13 +91,16 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		# Connect SIGNAL
 		QObject.connect(self.layer , SIGNAL("selectionChanged ()"), self.selectionChanged )
 		QObject.connect(self.layer , SIGNAL("layerDeleted()") , self.unload )
+		QObject.connect(self.layer , SIGNAL("layerDeleted()") , self.emitLayerDeleted )
 		# create rubber band to emphasis the current selected item (over the whole selection)
 		self.rubber = QgsRubberBand(self.iface.mapCanvas())
+		
+	def emitLayerDeleted(self):
+		self.emit(SIGNAL("layerDeleted(QgsMapLayer)"),self.layer)
 				
 	def unload(self):
 		self.rubber.reset()
-		self.iface.removeDockWidget(self)
-		self.emit(SIGNAL("layerDeleted(QgsMapLayer)"),self.layer)
+		self.iface.removeDockWidget(self)	
 		
 	def selectionChanged(self):
 		self.browseFrame.setEnabled(False)
@@ -114,12 +118,11 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		self.subset = self.layer.selectedFeaturesIds()
 		if self.settings.value("saveSelectionInProject", 1 ).toInt()[0] == 1:
 			self.layer.setCustomProperty("itemBrowserSelection",repr(self.subset))
-			self.layer.setCustomProperty("itemBrowserCurrentItem",0)
 		l = 0
 		for id in self.subset:
 			self.listCombo.addItem(_fromUtf8(""))
 			self.listCombo.setItemText(l, "%u" % id)
-			l+= 1		
+			l+= 1
 
 	def cleanBrowserFields(self):
 		self.currentPosLabel.setText('0/0')
