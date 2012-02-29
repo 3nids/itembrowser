@@ -123,6 +123,7 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 			self.listCombo.addItem(_fromUtf8(""))
 			self.listCombo.setItemText(l, "%u" % id)
 			l+= 1
+		self.on_listCombo_currentIndexChanged(0)		
 
 	def cleanBrowserFields(self):
 		self.currentPosLabel.setText('0/0')
