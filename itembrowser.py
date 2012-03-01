@@ -109,7 +109,7 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		nItems = self.layer.selectedFeatureCount()
 		if nItems == 0:	
 			if self.settings.value("saveSelectionInProject", 1 ).toInt()[0] == 1:
-				self.layer.setCustomProperty("itemBrowserSelection",repr("[]"))
+				self.layer.setCustomProperty("itemBrowserSelection",repr([]))
 			self.setVisible(False)
 			self.layer.emit(SIGNAL("browserNoItem()"))
 			return
