@@ -8,7 +8,7 @@
 [general]
 name=Item Browser
 description=Browse a multiple selection with auto-zooming to feature and an option to open feature form.
-version=1.3
+version=1.4
 qgisMinimumVersion=1.7
 
 tags=item browser, feature browser, multiple selection,browser,selection
