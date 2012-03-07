@@ -12,7 +12,7 @@ def name():
 def description():
     return "Browse a multiple selection with auto-zooming to feature and an option to open feature form."
 def version():
-    return "Version 1.4"
+    return "Version 1.5"
 def icon():
     return "icon.png"
 def qgisMinimumVersion():
