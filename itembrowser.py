@@ -44,11 +44,16 @@ class itemBrowser():
 		self.uisettingsAction = QAction("settings", self.iface.mainWindow())
 		QObject.connect(self.uisettingsAction, SIGNAL("triggered()"), self.uisettings.exec_)
 		self.iface.addPluginToMenu("&Item Browser", self.uisettingsAction)	
+		# help
+		self.helpAction = QAction(QIcon(":/plugins/itembrowser/icons/help.png"), "Help", self.iface.mainWindow())
+		QObject.connect(self.helpAction, SIGNAL("triggered()"), lambda: QDesktopServices.openUrl(QUrl("https://github.com/3nids/itembrowser/wiki")))
+		self.iface.addPluginToMenu("&Item Browser", self.helpAction)
 				
 	def unload(self):
 		# Remove the plugin menu item and icon
 		self.iface.removePluginMenu("&Item Browser",self.connectLayerAction)
 		self.iface.removePluginMenu("&Item Browser",self.uisettingsAction)
+		self.iface.removePluginMenu("&Item Browser",self.helpAction)
 		self.iface.removeToolBarIcon(self.connectLayerAction)
 		
 	def connect(self):

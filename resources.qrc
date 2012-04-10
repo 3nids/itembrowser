@@ -2,4 +2,7 @@
     <qresource prefix="/plugins/itembrowser" >
         <file>icons/connect.png</file>
     </qresource>
+    <qresource prefix="/plugins/itembrowser" >
+        <file>icons/help.png</file>
+    </qresource>
 </RCC>
