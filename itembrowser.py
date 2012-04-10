@@ -83,8 +83,10 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		self.setupUi(self)
 		self.setWindowTitle("ItemBrowser: %s" % layer.name())
 		if layer.hasGeometryType() is False:
-			self.zoomCheck.setChecked(False)
-			self.zoomCheck.setEnabled(False)
+			self.panCheck.setChecked(False)
+			self.panCheck.setEnabled(False)
+			self.scaleCheck.setChecked(False)
+			self.scaleCheck.setEnabled(False)
 		self.iface.addDockWidget(Qt.LeftDockWidgetArea,self)
 		self.browseFrame.setEnabled(False)
 		self.setVisible(False)
@@ -129,13 +131,22 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		self.currentPosLabel.setText('0/0')
 		self.listCombo.clear()
 		
-	def zoomToItem(self,item):
+	def panScaleToItem(self,item):
+		if self.panCheck.isChecked() is False: return
 		bobo = item.geometry().boundingBox()
-		if bobo.width() == 0 or bobo.height()==0:
-			x = bobo.center().x()
-			y = bobo.center().y()
-			bobo.set(x-5,y-5,x+5,y+5)			
-		bobo.scale( self.settings.value("scale",5).toInt()[0] )
+		# if scaling and bobo has width and height (i.e. not a point)
+		if self.scaleCheck.isChecked() and bobo.width() != 0 and bobo.height() != 0:
+			bobo.scale( self.settings.value("scale",5).toInt()[0] )
+		else:
+			panTo  = bobo.center()
+			bobo = self.iface.mapCanvas().extent()
+			xshift  = panTo.x() - bobo.center().x()
+			yshift  = panTo.y() - bobo.center().y()
+			x0 = bobo.xMinimum() + xshift
+			y0 = bobo.yMinimum() + yshift
+			x1 = bobo.xMaximum() + xshift
+			y1 = bobo.yMaximum() + yshift
+			bobo.set(x0,y0,x1,y1)		
 		self.iface.mapCanvas().setExtent(bobo)
 		self.iface.mapCanvas().refresh()	
 
@@ -176,22 +187,33 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 			self.rubber.setColor(color)
 			self.rubber.setWidth(width)
 			self.rubber.addGeometry(item.geometry(),self.layer)
-		# zoom to item
-		if self.zoomCheck.isChecked():
-			self.zoomToItem(item)
+		# scale to item
+		self.panScaleToItem(item)
 		# Update browser
 		self.currentPosLabel.setText('%u/%u' % (i+1,len(self.subset)) )
 		# emit signal
 		self.layer.emit(SIGNAL("browserCurrentItem(int)"),item.id())
 		
-	@pyqtSignature("on_zoomCheck_stateChanged(int)")
-	def on_zoomCheck_stateChanged(self,i):
-		if self.zoomCheck.isChecked():
+	@pyqtSignature("on_panCheck_stateChanged(int)")
+	def on_panCheck_stateChanged(self,i):
+		if self.panCheck.isChecked():
+			self.scaleCheck.setEnabled(True)
 			# Extract item
 			item = self.getCurrentItem()
 			if item is False: return
-			# zoom
-			self.zoomToItem(item)
+			# scale
+			self.panScaleToItem(item)
+		else:
+			self.scaleCheck.setEnabled(False)
+			
+	@pyqtSignature("on_scaleCheck_stateChanged(int)")
+	def on_scaleCheck_stateChanged(self,i):
+		if self.scaleCheck.isChecked():
+			# Extract item
+			item = self.getCurrentItem()
+			if item is False: return
+			# scale
+			self.panScaleToItem(item)
 
 	@pyqtSignature("on_editFormButton_clicked()")
 	def on_editFormButton_clicked(self):

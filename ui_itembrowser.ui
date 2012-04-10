@@ -6,16 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>265</width>
-    <height>120</height>
+    <width>283</width>
+    <height>179</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string notr="true">qWat :: item browser</string>
+   <string notr="true">Item Browser</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
    <layout class="QGridLayout" name="gridLayout_3">
-    <item row="0" column="0">
+    <item row="0" column="1">
      <widget class="QFrame" name="browseFrame">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -31,78 +31,6 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
-        <widget class="QPushButton" name="previousButton">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>21</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string/>
-         </property>
-         <property name="accessibleName">
-          <string notr="true"/>
-         </property>
-         <property name="accessibleDescription">
-          <string/>
-         </property>
-         <property name="text">
-          <string notr="true">&lt;</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QComboBox" name="listCombo">
-         <property name="toolTip">
-          <string/>
-         </property>
-         <property name="accessibleName">
-          <string notr="true"/>
-         </property>
-         <property name="accessibleDescription">
-          <string notr="true"/>
-         </property>
-         <property name="editable">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="5">
-        <widget class="QPushButton" name="nextButton">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>21</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string/>
-         </property>
-         <property name="accessibleName">
-          <string notr="true"/>
-         </property>
-         <property name="accessibleDescription">
-          <string notr="true"/>
-         </property>
-         <property name="text">
-          <string notr="true">&gt;</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2" colspan="3">
         <widget class="QLabel" name="currentPosLabel">
          <property name="toolTip">
           <string/>
@@ -121,28 +49,122 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0" colspan="5">
-        <widget class="QCheckBox" name="zoomCheck">
-         <property name="text">
-          <string>zoom to current item</string>
-         </property>
+       <item row="1" column="0">
+        <widget class="QWidget" name="widget" native="true">
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="1" column="0">
+           <widget class="QPushButton" name="previousButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>21</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="accessibleName">
+             <string notr="true"/>
+            </property>
+            <property name="accessibleDescription">
+             <string/>
+            </property>
+            <property name="text">
+             <string notr="true">&lt;</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="listCombo">
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="accessibleName">
+             <string notr="true"/>
+            </property>
+            <property name="accessibleDescription">
+             <string notr="true"/>
+            </property>
+            <property name="editable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QPushButton" name="nextButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>21</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="accessibleName">
+             <string notr="true"/>
+            </property>
+            <property name="accessibleDescription">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string notr="true">&gt;</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
-       <item row="1" column="5">
-        <widget class="QToolButton" name="editFormButton">
-         <property name="toolTip">
-          <string notr="true"/>
-         </property>
-         <property name="accessibleDescription">
-          <string notr="true"/>
-         </property>
-         <property name="text">
-          <string notr="true">...</string>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>icons/edit.png</normaloff>icons/edit.png</iconset>
-         </property>
+       <item row="2" column="0">
+        <widget class="QWidget" name="widget_2" native="true">
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="panCheck">
+            <property name="text">
+             <string>pan</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="scaleCheck">
+            <property name="text">
+             <string>scale</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QToolButton" name="editFormButton">
+            <property name="toolTip">
+             <string notr="true"/>
+            </property>
+            <property name="accessibleDescription">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string notr="true">...</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>icons/edit.png</normaloff>icons/edit.png</iconset>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
