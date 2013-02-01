@@ -82,6 +82,7 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 	def __init__(self,iface,layer):
 		self.iface = iface
 		self.layer = layer
+		self.renderer = self.iface.mapCanvas().mapRenderer()
 		self.settings = QSettings("ItemBrowser","ItemBrowser")
 		# UI setup
 		QDockWidget.__init__(self)
@@ -99,7 +100,7 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		QObject.connect(self.layer , SIGNAL("selectionChanged ()"), self.selectionChanged )
 		QObject.connect(self.layer , SIGNAL("layerDeleted()") , self.unload )
 		QObject.connect(self.layer , SIGNAL("layerDeleted()") , self.emitLayerDeleted )
-		# create rubber band to emphasis the current selected item (over the whole selection)
+		# create rubber band to emphasis the current selected feature (over the whole selection)
 		self.rubber = QgsRubberBand(self.iface.mapCanvas())
 		
 	def emitLayerDeleted(self):
@@ -136,31 +137,34 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		self.currentPosLabel.setText('0/0')
 		self.listCombo.clear()
 		
-	def panScaleToItem(self,item):
+	def panScaleToItem(self,feature):
 		if self.panCheck.isChecked() is False: return
-		bobo = item.geometry().boundingBox()
+		featBobo = feature.geometry().boundingBox()
 		# if scaling and bobo has width and height (i.e. not a point)
-		if self.scaleCheck.isChecked() and bobo.width() != 0 and bobo.height() != 0:
-			bobo.scale( self.settings.value("scale",5).toInt()[0] )
+		if self.scaleCheck.isChecked() and featBobo.width() != 0 and featBobo.height() != 0:
+			featBobo.scale( self.settings.value("scale",5).toInt()[0] )
+			x0 = self.renderer.layerToMapCoordinates( self.layer, featBobo.xMinimum() )
+			y0 = self.renderer.layerToMapCoordinates( self.layer, featBobo.yMinimum() )
+			x1 = self.renderer.layerToMapCoordinates( self.layer, featBobo.xMaximum() )
+			y1 = self.renderer.layerToMapCoordinates( self.layer, featBobo.yMaximum() )
 		else:
-			panTo  = bobo.center()
-			bobo = self.iface.mapCanvas().extent()
-			xshift  = panTo.x() - bobo.center().x()
-			yshift  = panTo.y() - bobo.center().y()
-			x0 = bobo.xMinimum() + xshift
-			y0 = bobo.yMinimum() + yshift
-			x1 = bobo.xMaximum() + xshift
-			y1 = bobo.yMaximum() + yshift
-			bobo.set(x0,y0,x1,y1)		
-		self.iface.mapCanvas().setExtent(bobo)
+			panTo = self.renderer.layerToMapCoordinates( self.layer, featBobo.center() )
+			mapBobo  = self.iface.mapCanvas().extent()
+			xshift = panTo.x() - mapBobo.center().x()
+			yshift = panTo.y() - mapBobo.center().y()
+			x0 = mapBobo.xMinimum() + xshift
+			y0 = mapBobo.yMinimum() + yshift
+			x1 = mapBobo.xMaximum() + xshift
+			y1 = mapBobo.yMaximum() + yshift
+		self.iface.mapCanvas().setExtent( QgsRectangle(x0,y0,x1,y1) )
 		self.iface.mapCanvas().refresh()	
 
 	def getCurrentItem(self):
 		i = self.listCombo.currentIndex()
 		if i == -1: return False
-		item = QgsFeature()
-		self.layer.featureAtId(self.subset[i],item)
-		return item	
+		feature = QgsFeature()
+		self.layer.featureAtId(self.subset[i],feature)
+		return feature	
 		
 	@pyqtSignature("on_previousButton_clicked()")
 	def on_previousButton_clicked(self):
@@ -177,11 +181,11 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 
 	@pyqtSignature("on_listCombo_currentIndexChanged(int)")
 	def on_listCombo_currentIndexChanged(self,i):
-		item = self.getCurrentItem()
-		if item is False: return
+		feature = self.getCurrentItem()
+		if feature is False: return
 		if self.settings.value("saveSelectionInProject", 1 ).toInt()[0] == 1:
 			self.layer.setCustomProperty("itemBrowserCurrentItem",i)
-		# update rubber band (only if more than 1 item is selected)
+		# update rubber band (only if more than 1 feature is selected)
 		self.rubber.reset()
 		if self.listCombo.count() > 1:
 			width = self.settings.value("rubber_width",2).toDouble()[0]
@@ -191,34 +195,34 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 			color  = QColor(colorR,colorG,colorB,255)
 			self.rubber.setColor(color)
 			self.rubber.setWidth(width)
-			self.rubber.addGeometry(item.geometry(),self.layer)
-		# scale to item
-		self.panScaleToItem(item)
+			self.rubber.addGeometry(feature.geometry(),self.layer)
+		# scale to feature
+		self.panScaleToItem(feature)
 		# Update browser
 		self.currentPosLabel.setText('%u/%u' % (i+1,len(self.subset)) )
 		# emit signal
-		self.layer.emit(SIGNAL("browserCurrentItem(int)"),item.id())
+		self.layer.emit(SIGNAL("browserCurrentItem(int)"),feature.id())
 		
 	@pyqtSignature("on_panCheck_stateChanged(int)")
 	def on_panCheck_stateChanged(self,i):
 		if self.panCheck.isChecked():
 			self.scaleCheck.setEnabled(True)
-			# Extract item
-			item = self.getCurrentItem()
-			if item is False: return
+			# Extract feature
+			feature = self.getCurrentItem()
+			if feature is False: return
 			# scale
-			self.panScaleToItem(item)
+			self.panScaleToItem(feature)
 		else:
 			self.scaleCheck.setEnabled(False)
 			
 	@pyqtSignature("on_scaleCheck_stateChanged(int)")
 	def on_scaleCheck_stateChanged(self,i):
 		if self.scaleCheck.isChecked():
-			# Extract item
-			item = self.getCurrentItem()
-			if item is False: return
+			# Extract feature
+			feature = self.getCurrentItem()
+			if feature is False: return
 			# scale
-			self.panScaleToItem(item)
+			self.panScaleToItem(feature)
 
 	@pyqtSignature("on_editFormButton_clicked()")
 	def on_editFormButton_clicked(self):
