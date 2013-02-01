@@ -29,7 +29,7 @@ class settings(QDialog, Ui_Settings ):
 		self.settings = QSettings("ItemBrowser","ItemBrowser")
 		
 		self.saveSelectionBox.setChecked( self.settings.value("saveSelectionInProject",  1).toInt()[0] )
-		self.scaleSpin.setValue(  self.settings.value("scale",5).toInt()[0])
+		self.scaleSpin.setValue(  self.settings.value("scale",4).toInt()[0])
 		self.rubberWidth.setValue(self.settings.value("rubber_width",2).toDouble()[0])
 		self.colorR = self.settings.value("rubber_colorR",255).toInt()[0]
 		self.colorG = self.settings.value("rubber_colorG",0  ).toInt()[0]

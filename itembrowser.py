@@ -142,7 +142,7 @@ class layerItemBrowser( QDockWidget , Ui_itembrowser ):
 		featBobo = feature.geometry().boundingBox()
 		# if scaling and bobo has width and height (i.e. not a point)
 		if self.scaleCheck.isChecked() and featBobo.width() != 0 and featBobo.height() != 0:
-			featBobo.scale( self.settings.value("scale",5).toInt()[0] )
+			featBobo.scale( self.settings.value("scale",4).toInt()[0] )
 			ul = self.renderer.layerToMapCoordinates( self.layer, QgsPoint( featBobo.xMinimum() , featBobo.yMaximum() ) )
 			ur = self.renderer.layerToMapCoordinates( self.layer, QgsPoint( featBobo.xMaximum() , featBobo.yMaximum() ) )
 			ll = self.renderer.layerToMapCoordinates( self.layer, QgsPoint( featBobo.xMinimum() , featBobo.yMinimum() ) )
