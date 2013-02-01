@@ -9,7 +9,7 @@
 name=Item Browser
 description=Browse a multiple selection with auto-zooming to feature and an option to open feature form.
 version=1.7
-qgisMinimumVersion=1.7
+qgisMinimumVersion=1.8
 author=Denis Rouzaud
 email=denis.rouzaud@gmail.com
 
