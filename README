@@ -29,7 +29,12 @@ If you want something to happen with the selection, the connected layer emits tw
 
 ##  Changelog
 
-**Version 1.6.0**
+**Version 1.7**
+01.02.2013
+
+* Added layer to map coordinates transformation [issue #1](https://github.com/3nids/itembrowser/issues/1) 
+
+**Version 1.6**
 10.04.2012
 
 * pan and/or zoom option
