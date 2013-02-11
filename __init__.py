@@ -12,11 +12,11 @@ def name():
 def description():
     return "Browse a multiple selection with auto-zooming to feature and an option to open feature form."
 def version():
-    return "Version 1.7"
+    return "Version 1.8"
 def icon():
     return "icon.png"
 def qgisMinimumVersion():
-    return "1.7"
+    return "1.8"
 def classFactory(iface):
     from itembrowser import itemBrowser
     return itemBrowser(iface)
