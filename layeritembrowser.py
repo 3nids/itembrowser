@@ -64,7 +64,7 @@ class LayerItemBrowser( QDockWidget , Ui_itembrowser ):
 			self.layer.setCustomProperty("itemBrowserSelection",repr(self.subset))
 		l = 0
 		for id in self.subset:
-			self.listCombo.addItem(_fromUtf8(""))
+			self.listCombo.addItem("")
 			self.listCombo.setItemText(l, "%u" % id)
 			l+= 1
 		self.on_listCombo_currentIndexChanged(0)		
@@ -104,9 +104,20 @@ class LayerItemBrowser( QDockWidget , Ui_itembrowser ):
 	def getCurrentItem(self):
 		i = self.listCombo.currentIndex()
 		if i == -1: return False
-		feature = QgsFeature()
-		self.layer.featureAtId(self.subset[i],feature)
-		return feature	
+		try:
+			freq = QgsFeatureRequest()
+			freq.setFilterFid(self.subset[i])
+			features = []
+			for f in self.layer.getFeatures( freq ):
+				features.append( f )
+			if len(features)!=1:
+				raise NameError( "Wrong subset of features" )
+			else:
+				f = features[0]			
+		except:
+			f = QgsFeature()
+			self.layer.featureAtId(self.subset[i],f)
+		return f	
 		
 	@pyqtSignature("on_previousButton_clicked()")
 	def on_previousButton_clicked(self):
