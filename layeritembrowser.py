@@ -104,20 +104,17 @@ class LayerItemBrowser( QDockWidget , Ui_itembrowser ):
 	def getCurrentItem(self):
 		i = self.listCombo.currentIndex()
 		if i == -1: return False
+		f = QgsFeature()
 		try:
-			freq = QgsFeatureRequest()
-			freq.setFilterFid(self.subset[i])
-			features = []
-			for f in self.layer.getFeatures( freq ):
-				features.append( f )
-			if len(features)!=1:
-				raise NameError( "Wrong subset of features" )
+			if self.layer.getFeatures( QgsFeatureRequest().setFilterFid( self.subset[i] ) ).nextFeature( f ):
+				return f
 			else:
-				f = features[0]			
+				raise NameError( "feature not found" )
 		except:
-			f = QgsFeature()
-			self.layer.featureAtId(self.subset[i],f)
-		return f	
+			if self.layer.featureAtId(self.subset[i],f):
+				return f	
+			else:
+				raise NameError( "feature not found" )
 		
 	@pyqtSignature("on_previousButton_clicked()")
 	def on_previousButton_clicked(self):
