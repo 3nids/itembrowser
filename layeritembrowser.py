@@ -103,7 +103,7 @@ class LayerItemBrowser( QDockWidget , Ui_itembrowser ):
 
 	def getCurrentItem(self):
 		i = self.listCombo.currentIndex()
-		if i == -1: return False
+		if i == -1: return None
 		f = QgsFeature()
 		try:
 			if self.layer.getFeatures( QgsFeatureRequest().setFilterFid( self.subset[i] ) ).nextFeature( f ):
@@ -114,7 +114,7 @@ class LayerItemBrowser( QDockWidget , Ui_itembrowser ):
 			if self.layer.featureAtId(self.subset[i],f):
 				return f	
 			else:
-				raise NameError( "feature not found" )
+				return None
 		
 	@pyqtSignature("on_previousButton_clicked()")
 	def on_previousButton_clicked(self):
@@ -132,7 +132,7 @@ class LayerItemBrowser( QDockWidget , Ui_itembrowser ):
 	@pyqtSignature("on_listCombo_currentIndexChanged(int)")
 	def on_listCombo_currentIndexChanged(self,i):
 		feature = self.getCurrentItem()
-		if feature is False: return
+		if feature is None: return
 		if self.settings.value("saveSelectionInProject", 1 ).toInt()[0] == 1:
 			self.layer.setCustomProperty("itemBrowserCurrentItem",i)
 		# update rubber band (only if more than 1 feature is selected)
@@ -159,7 +159,7 @@ class LayerItemBrowser( QDockWidget , Ui_itembrowser ):
 			self.scaleCheck.setEnabled(True)
 			# Extract feature
 			feature = self.getCurrentItem()
-			if feature is False: return
+			if feature is None: return
 			# scale
 			self.panScaleToItem(feature)
 		else:
@@ -170,7 +170,7 @@ class LayerItemBrowser( QDockWidget , Ui_itembrowser ):
 		if self.scaleCheck.isChecked():
 			# Extract feature
 			feature = self.getCurrentItem()
-			if feature is False: return
+			if feature is None: return
 			# scale
 			self.panScaleToItem(feature)
 
