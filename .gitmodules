@@ -1,0 +1,3 @@
+[submodule "qgissettingmanager"]
+	path = qgissettingmanager
+	url = git@github.com:3nids/qgissettingmanager.git

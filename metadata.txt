@@ -1,15 +1,9 @@
-# This file contains metadata for your plugin. Beginning
-# with version 1.8 this is the preferred way to supply information about a
-# plugin. The current method of embedding metadata in __init__.py will
-# be supported until version 2.0
-
-# This file should be included when you package your plugin.
 
 [general]
 name=Item Browser
 description=Browse a multiple selection with auto-zooming to feature and an option to open feature form.
 version=1.9
-qgisMinimumVersion=1.8
+qgisMinimumVersion=2.0
 author=Denis Rouzaud
 email=denis.rouzaud@gmail.com
 
