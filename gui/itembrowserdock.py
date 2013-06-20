@@ -25,72 +25,67 @@
 #
 #---------------------------------------------------------------------
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from qgis.core import *
-from qgis.gui import *
+from PyQt4.QtCore import SIGNAL, pyqtSignature, pyqtSignal, Qt
+from PyQt4.QtGui import QDockWidget, QIcon
+from qgis.core import QgsPoint, QgsRectangle, QgsFeatureRequest, QgsFeature
+from qgis.gui import QgsRubberBand
 
-from core.mysettings import MySettings
+from ..core.mysettings import MySettings
+from ..ui.ui_itembrowser import Ui_itembrowser
 
-from ui.ui_itembrowser import Ui_itembrowser
 
-
-class LayerItemBrowser(QDockWidget, Ui_itembrowser):
-    layerDeleted = pyqtSignal(QgsMapLayer)
+class ItemBrowserDock(QDockWidget, Ui_itembrowser):
+    dockRemoved = pyqtSignal(str)
 
     def __init__(self, iface, layer):
         self.iface = iface
         self.layer = layer
         self.renderer = self.iface.mapCanvas().mapRenderer()
         self.settings = MySettings()
-        # UI setup
         QDockWidget.__init__(self)
         self.setupUi(self)
+
         self.setWindowTitle("ItemBrowser: %s" % layer.name())
         if layer.hasGeometryType() is False:
             self.panCheck.setChecked(False)
             self.panCheck.setEnabled(False)
             self.scaleCheck.setChecked(False)
             self.scaleCheck.setEnabled(False)
-        self.iface.addDockWidget(Qt.LeftDockWidgetArea, self)
-        self.browseFrame.setEnabled(False)
-        self.setVisible(False)
 
-        self.layer.selectionChanged.connect(self.selectionChanged)
-        self.layer.layerDeleted.connect(self.unload)
-        self.layer.layerDeleted.connect(self.emitLayerDeleted)
-        # create rubber band to emphasis the current selected feature (over the whole selection)
+        self.previousButton.setArrowType(Qt.LeftArrow)
+        self.nextButton.setArrowType(Qt.RightArrow)
+        icon = QIcon(":/plugins/itembrowser/icons/openform.png")
+        self.editFormButton.setIcon(icon)
+
         self.rubber = QgsRubberBand(self.iface.mapCanvas())
-          
-    def emitLayerDeleted(self):
-        self.layerDeleted.emit(self.layer)
-                    
-    def unload(self):
+        self.layer.selectionChanged.connect(self.selectionChanged)
+        self.layer.layerDeleted.connect(self.close)
+
+        self.selectionChanged()
+
+    def closeEvent(self, e):
+        #QDockWidget.closeEvent(self, e)
         self.rubber.reset()
-        self.iface.removeDockWidget(self)
+        self.layer.selectionChanged.disconnect(self.selectionChanged)
+        if self.settings.value("saveSelectionInProject"):
+            self.layer.setCustomProperty("itemBrowserSelection", repr([]))
+        #self.iface.removeDockWidget(self)
+        self.dockRemoved.emit(self.layer.id())
           
     def selectionChanged(self):
-        self.browseFrame.setEnabled(False)
         self.cleanBrowserFields()
         self.rubber.reset()
         nItems = self.layer.selectedFeatureCount()
-        if nItems == 0:
-            if self.settings.value("saveSelectionInProject"):
-                self.layer.setCustomProperty("itemBrowserSelection", repr([]))
-            self.setVisible(False)
+        if nItems < 2:
+            self.close()
             self.layer.emit(SIGNAL("browserNoItem()"))
             return
-        if nItems > 0:
-            self.setVisible(True)  # set to 1 ?
         self.browseFrame.setEnabled(True)
         self.subset = self.layer.selectedFeaturesIds()
         if self.settings.value("saveSelectionInProject"):
             self.layer.setCustomProperty("itemBrowserSelection", repr(self.subset))
-        l = 0
-        for id in self.subset:
-            self.listCombo.addItem("")
-            self.listCombo.setItemText(l, "%u" % id)
-            l += 1
+        for fid in self.subset:
+            self.listCombo.addItem("%u" % fid)
         self.on_listCombo_currentIndexChanged(0)
 
     def cleanBrowserFields(self):
@@ -123,12 +118,13 @@ class LayerItemBrowser(QDockWidget, Ui_itembrowser):
             y0 = mapBobo.yMinimum() + yshift
             x1 = mapBobo.xMaximum() + xshift
             y1 = mapBobo.yMaximum() + yshift
-        self.iface.mapCanvas().setExtent(QgsRectangle(x0,y0,x1,y1))
+        self.iface.mapCanvas().setExtent(QgsRectangle(x0, y0, x1, y1))
         self.iface.mapCanvas().refresh()
 
     def getCurrentItem(self):
         i = self.listCombo.currentIndex()
-        if i == -1: return None
+        if i == -1:
+            return None
         f = QgsFeature()
         if self.layer.getFeatures(QgsFeatureRequest().setFilterFid(self.subset[i])).nextFeature(f):
             return f
@@ -162,7 +158,7 @@ class LayerItemBrowser(QDockWidget, Ui_itembrowser):
             color = self.settings.value("rubberColor")
             self.rubber.setColor(color)
             self.rubber.setWidth(width)
-            self.rubber.addGeometry(feature.geometry(), self.layer)
+            self.rubber.setToGeometry(feature.geometry(), self.layer)
         # scale to feature
         self.panScaleToItem(feature)
         # Update browser

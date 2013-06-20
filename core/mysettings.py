@@ -26,7 +26,7 @@
 #---------------------------------------------------------------------
 
 from PyQt4.QtGui import QColor
-from ..qgissettingmanager import *
+from ..qgissettingmanager import SettingManager
 
 pluginName = "itembrowser"
 
@@ -37,7 +37,7 @@ class MySettings(SettingManager):
 
         # global settings
         self.addSetting("saveSelectionInProject", "bool", "global", True)
-        self.addSetting("scale", "double", "global", 4)
+        self.addSetting("scale", "integer", "global", 4)
         self.addSetting("rubberWidth", "double", "global", 2)
         self.addSetting("rubberColor", "color", "global", QColor(255, 0, 0))
 

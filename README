@@ -29,6 +29,11 @@ If you want something to happen with the selection, the connected layer emits tw
 
 ##  Changelog
 
+** Version 2.0** 20.06.2013
+
+* New workflow: an icon is enabled as soon as the current layer has a multiple selection. Clicking this icon shows the dock to browse the selection.
+* Updated to new API
+
 **Version 1.9** 18.02.2013
 
 *  bugfix: at launch, if a previously saved feature has been deleted

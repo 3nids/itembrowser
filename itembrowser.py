@@ -25,35 +25,31 @@
 #
 #---------------------------------------------------------------------
 
-from PyQt4.QtCore import QUrl
+from PyQt4.QtCore import QUrl, Qt
 from PyQt4.QtGui import QAction, QIcon, QDesktopServices
+from qgis.core import QgsMapLayer
 
 from core.mysettings import MySettings
 from gui.mysettingsdialog import MySettingsDialog
-
-from connectlayers import connectLayers
-from layeritembrowser import LayerItemBrowser
+from gui.itembrowserdock import ItemBrowserDock
 
 import resources
 
 
 class itemBrowser():
     def __init__(self, iface):
-        # Save reference to the QGIS interface
         self.iface = iface
-        self.layers = {}
         self.settings = MySettings()
-        # run connection when new layers are loaded
-        self.iface.mapCanvas().layersChanged.connect(self.connect)
-        
-    def initGui(self):
+        self.docks = {}
 
-        # CONNECTLAYERS
-        self.connectLayerAction = QAction(QIcon(":/plugins/itembrowser/icons/connect.png"),
-                                          "connect layers to item browser", self.iface.mainWindow())
-        self.connectLayerAction.triggered.connect(self.connectLayersDialog)
-        self.iface.addToolBarIcon(self.connectLayerAction)
-        self.iface.addPluginToMenu("&Item Browser", self.connectLayerAction)
+    def initGui(self):
+        # browse action
+        self.browserAction = QAction(QIcon(":/plugins/itembrowser/icons/itembrowser.png"),
+                                     "Browse selected items of current layer", self.iface.mainWindow())
+        self.browserAction.setEnabled(False)
+        self.browserAction.triggered.connect(self.openBrowserDock)
+        self.iface.addToolBarIcon(self.browserAction)
+        self.iface.addPluginToMenu("&Item Browser", self.browserAction)
         # settings
         self.uisettingsAction = QAction("settings", self.iface.mainWindow())
         self.uisettingsAction.triggered.connect(self.showSettings)
@@ -62,43 +58,39 @@ class itemBrowser():
         self.helpAction = QAction(QIcon(":/plugins/itembrowser/icons/help.png"), "Help", self.iface.mainWindow())
         self.helpAction.triggered.connect(lambda: QDesktopServices().openUrl(QUrl("https://github.com/3nids/itembrowser/wiki")))
         self.iface.addPluginToMenu("&Item Browser", self.helpAction)
+
+        self.iface.currentLayerChanged.connect(self.currentLayerChanged)
+        self.iface.mapCanvas().selectionChanged.connect(self.currentLayerChanged)
+        self.currentLayerChanged(self.iface.legendInterface().currentLayer())
               
     def unload(self):
-        # Remove the plugin menu item and icon
-        self.iface.removePluginMenu("&Item Browser", self.connectLayerAction)
+        self.iface.removePluginMenu("&Item Browser", self.browserAction)
         self.iface.removePluginMenu("&Item Browser", self.uisettingsAction)
         self.iface.removePluginMenu("&Item Browser", self.helpAction)
-        self.iface.removeToolBarIcon(self.connectLayerAction)
+        self.iface.removeToolBarIcon(self.browserAction)
         
-    def connect(self):
-        for layer in self.iface.legendInterface().layers():
-            if layer.customProperty("itemBrowserConnected", "no") == "yes":
-                if layer.id() in self.layers:
-                    continue
-                self.layers[layer.id()] = LayerItemBrowser(self.iface, layer)
-                self.layers[layer.id()].layerDeleted.connect(self.disconnectLayer)
-                if self.settings.value("saveSelectionInProject") and layer.selectedFeatureCount() == 0:
-                    exec("selection = %s" % layer.customProperty("itemBrowserSelection", "[]"))
-                    if len(selection) > 0:
-                        i = layer.customProperty("itemBrowserCurrentItem", 0).toInt()[0]
-                        layer.setSelectedFeatures(selection)
-                        self.layers[layer.id()].listCombo.setCurrentIndex(i)
-                self.layers[layer.id()].selectionChanged()
-            elif self.layers.has_key(layer.id()):
-                # if the layer is disconnected but was previously connected
-                layer.selectionChanged.disconnect(self.layers.get(layer.id()).selectionChanged)
-                self.layers[layer.id()].unload()
-                self.disconnectLayer(layer)
-              
-    def disconnectLayer(self, layer):
-        self.layers.pop(layer.id())
+    def currentLayerChanged(self, layer):
+        enable = (layer is not None
+                  and layer.type() == QgsMapLayer.VectorLayer
+                  and layer.hasGeometryType()
+                  and len(layer.selectedFeaturesIds()) > 1)
+        self.browserAction.setEnabled(enable)
+
+    def openBrowserDock(self):
+        layer = self.iface.legendInterface().currentLayer()
+        if layer.id() in self.docks:
+            return
+        dock = ItemBrowserDock(self.iface, layer)
+        dock.dockRemoved.connect(self.dockRemoved)
+        self.iface.addDockWidget(Qt.LeftDockWidgetArea, dock)
+        self.docks[layer.id()] = dock
+
+    def dockRemoved(self, layerid):
+        del self.docks[layerid]
 
     def showSettings(self):
         MySettingsDialog().exec_()
 
-    def connectLayersDialog(self):
-        dlg = connectLayers(self.iface)
-        if dlg.exec_():
-            self.connect()
+
 
 

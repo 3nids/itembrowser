@@ -1,6 +1,9 @@
 <RCC>
     <qresource prefix="/plugins/itembrowser" >
-        <file>icons/connect.png</file>
+        <file>icons/itembrowser.png</file>
+    </qresource>
+    <qresource prefix="/plugins/itembrowser" >
+        <file>icons/openform.png</file>
     </qresource>
     <qresource prefix="/plugins/itembrowser" >
         <file>icons/help.png</file>
