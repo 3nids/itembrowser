@@ -37,7 +37,7 @@ from ..ui.ui_itembrowser import Ui_itembrowser
 class ItemBrowserDock(QDockWidget, Ui_itembrowser):
     dockRemoved = pyqtSignal(str)
 
-    def __init__(self, iface, layer):
+    def __init__(self, iface, layer, currentFeature):
         self.iface = iface
         self.layer = layer
         self.renderer = self.iface.mapCanvas().mapRenderer()
@@ -62,14 +62,13 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
         self.layer.layerDeleted.connect(self.close)
 
         self.selectionChanged()
+        self.listCombo.setCurrentIndex(currentFeature)
 
     def closeEvent(self, e):
-        #QDockWidget.closeEvent(self, e)
         self.rubber.reset()
         self.layer.selectionChanged.disconnect(self.selectionChanged)
         if self.settings.value("saveSelectionInProject"):
             self.layer.setCustomProperty("itemBrowserSelection", repr([]))
-        #self.iface.removeDockWidget(self)
         self.dockRemoved.emit(self.layer.id())
           
     def selectionChanged(self):
@@ -86,7 +85,6 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
             self.layer.setCustomProperty("itemBrowserSelection", repr(self.subset))
         for fid in self.subset:
             self.listCombo.addItem("%u" % fid)
-        self.on_listCombo_currentIndexChanged(0)
 
     def cleanBrowserFields(self):
         self.currentPosLabel.setText('0/0')
@@ -144,14 +142,16 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
         n = min(i+1, c-1)
         self.listCombo.setCurrentIndex(n)
 
+    @pyqtSignature("on_listCombo_activated(int)")
+    def on_listCombo_currentIndexChanged(self, i):
+        if self.settings.value("saveSelectionInProject"):
+            self.layer.setCustomProperty("itemBrowserCurrentItem", i)
+
     @pyqtSignature("on_listCombo_currentIndexChanged(int)")
     def on_listCombo_currentIndexChanged(self, i):
         feature = self.getCurrentItem()
         if feature is None: 
             return
-        if self.settings.value("saveSelectionInProject"):
-            self.layer.setCustomProperty("itemBrowserCurrentItem", i)
-        # update rubber band (only if more than 1 feature is selected)
         self.rubber.reset()
         if self.listCombo.count() > 1:
             width = self.settings.value("rubberWidth")
@@ -162,19 +162,17 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
         # scale to feature
         self.panScaleToItem(feature)
         # Update browser
-        self.currentPosLabel.setText('%u/%u' % (i+1, len(self.subset)))
+        self.currentPosLabel.setText("%u/%u" % (i+1, len(self.subset)))
         # emit signal
-        self.layer.emit(SIGNAL("browserCurrentItem(int)"), feature.id())
+        self.layer.emit(SIGNAL("browserCurrentItem(long)"), feature.id())
           
     @pyqtSignature("on_panCheck_stateChanged(int)")
     def on_panCheck_stateChanged(self, i):
         if self.panCheck.isChecked():
             self.scaleCheck.setEnabled(True)
-            # Extract feature
             feature = self.getCurrentItem()
             if feature is None:
                 return
-            # scale
             self.panScaleToItem(feature)
         else:
             self.scaleCheck.setEnabled(False)
@@ -182,14 +180,11 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
     @pyqtSignature("on_scaleCheck_stateChanged(int)")
     def on_scaleCheck_stateChanged(self, i):
         if self.scaleCheck.isChecked():
-            # Extract feature
             feature = self.getCurrentItem()
             if feature is None: 
                 return
-            # scale
             self.panScaleToItem(feature)
 
     @pyqtSignature("on_editFormButton_clicked()")
     def on_editFormButton_clicked(self):
-        # launch edit form
         self.iface.openFeatureForm(self.layer, self.getCurrentItem())

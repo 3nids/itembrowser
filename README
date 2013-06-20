@@ -24,7 +24,7 @@ Last version can be found on [github](https://github.com/3nids/itembrowser).
 
 If you want something to happen with the selection, the connected layer emits two signals as soon as the selection changed:
 
-* _browserCurrentItem(int)_ if there is a selection, the given integer being the feature id.
+* _browserCurrentItem(long)_ if there is a selection, the given integer being the feature id.
 * _browserNoItem()_ if there is nothing selected.
 
 ##  Changelog

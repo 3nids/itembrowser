@@ -47,7 +47,7 @@ class itemBrowser():
         self.browserAction = QAction(QIcon(":/plugins/itembrowser/icons/itembrowser.png"),
                                      "Browse selected items of current layer", self.iface.mainWindow())
         self.browserAction.setEnabled(False)
-        self.browserAction.triggered.connect(self.openBrowserDock)
+        self.browserAction.triggered.connect(lambda(x): self.openBrowserDock())  # prevent passing "False" to the method
         self.iface.addToolBarIcon(self.browserAction)
         self.iface.addPluginToMenu("&Item Browser", self.browserAction)
         # settings
@@ -61,6 +61,8 @@ class itemBrowser():
 
         self.iface.currentLayerChanged.connect(self.currentLayerChanged)
         self.iface.mapCanvas().selectionChanged.connect(self.currentLayerChanged)
+        self.iface.mapCanvas().layersChanged.connect(self.reloadSession)
+
         self.currentLayerChanged(self.iface.legendInterface().currentLayer())
               
     def unload(self):
@@ -76,17 +78,32 @@ class itemBrowser():
                   and len(layer.selectedFeaturesIds()) > 1)
         self.browserAction.setEnabled(enable)
 
-    def openBrowserDock(self):
-        layer = self.iface.legendInterface().currentLayer()
-        if layer.id() in self.docks:
+    def openBrowserDock(self, layer=None, currentFeature=0):
+        if layer is None:
+            layer = self.iface.legendInterface().currentLayer()
+        if layer is None:
             return
-        dock = ItemBrowserDock(self.iface, layer)
+        if layer.id() in self.docks:
+            print "layer already docked"
+            return
+        dock = ItemBrowserDock(self.iface, layer, currentFeature)
         dock.dockRemoved.connect(self.dockRemoved)
         self.iface.addDockWidget(Qt.LeftDockWidgetArea, dock)
         self.docks[layer.id()] = dock
 
     def dockRemoved(self, layerid):
         del self.docks[layerid]
+
+    def reloadSession(self):
+        if not self.settings.value("saveSelectionInProject"):
+            return
+        for layer in self.iface.legendInterface().layers():
+            exec("selection = %s" % layer.customProperty("itemBrowserSelection", "[]"))
+            if len(selection) > 0:
+                currentFeature = long(layer.customProperty("itemBrowserCurrentItem", 0))
+                print "load", currentFeature
+                layer.setSelectedFeatures(selection)
+                self.openBrowserDock(layer, currentFeature)
 
     def showSettings(self):
         MySettingsDialog().exec_()
