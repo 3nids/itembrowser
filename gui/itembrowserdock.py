@@ -58,11 +58,11 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
         self.editFormButton.setIcon(icon)
 
         self.rubber = QgsRubberBand(self.iface.mapCanvas())
-
         self.selectionChanged()
-        print "set", currentFeature
-        self.listCombo.setCurrentIndex(currentFeature)
-
+        if currentFeature == self.listCombo.currentIndex():
+            self.on_listCombo_currentIndexChanged(currentFeature)
+        else:
+            self.listCombo.setCurrentIndex(currentFeature)
         self.layer.selectionChanged.connect(self.selectionChanged)
         self.layer.layerDeleted.connect(self.close)
 
@@ -149,12 +149,10 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
     @pyqtSlot(int, name="on_listCombo_activated")
     def saveCurrentFeature(self, i):
         if self.settings.value("saveSelectionInProject"):
-            print "save", self.layer.id(), i
             self.layer.setCustomProperty("itemBrowserCurrentItem", i)
 
     @pyqtSlot(int, name="on_listCombo_currentIndexChanged")
     def on_listCombo_currentIndexChanged(self, i):
-        print "current index:", self.layer.id(), i
         feature = self.getCurrentItem()
         if feature is None: 
             return
