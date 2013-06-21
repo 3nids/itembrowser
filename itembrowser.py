@@ -56,7 +56,7 @@ class itemBrowser():
         self.iface.addPluginToMenu("&Item Browser", self.uisettingsAction)     
         # help
         self.helpAction = QAction(QIcon(":/plugins/itembrowser/icons/help.png"), "Help", self.iface.mainWindow())
-        self.helpAction.triggered.connect(lambda: QDesktopServices().openUrl(QUrl("https://github.com/3nids/itembrowser/wiki")))
+        self.helpAction.triggered.connect(lambda: QDesktopServices().openUrl(QUrl("http://3nids.github.io/itembrowser")))
         self.iface.addPluginToMenu("&Item Browser", self.helpAction)
 
         self.iface.currentLayerChanged.connect(self.currentLayerChanged)
