@@ -84,7 +84,7 @@ class itemBrowser():
         if layer is None:
             return
         if layer.id() in self.docks:
-            print "layer already docked"
+            #print "layer already docked"
             return
         dock = ItemBrowserDock(self.iface, layer, currentFeature)
         dock.dockRemoved.connect(self.dockRemoved)
@@ -101,9 +101,11 @@ class itemBrowser():
             exec("selection = %s" % layer.customProperty("itemBrowserSelection", "[]"))
             if len(selection) > 0:
                 currentFeature = long(layer.customProperty("itemBrowserCurrentItem", 0))
-                print "load", currentFeature
-                layer.setSelectedFeatures(selection)
-                self.openBrowserDock(layer, currentFeature)
+                if layer.id() in self.docks:
+                    self.docks[layer.id()].listCombo.setCurrentIndex(currentFeature)
+                else:
+                    layer.setSelectedFeatures(selection)
+                    self.openBrowserDock(layer, currentFeature)
 
     def showSettings(self):
         MySettingsDialog().exec_()

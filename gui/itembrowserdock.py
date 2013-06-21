@@ -25,7 +25,7 @@
 #
 #---------------------------------------------------------------------
 
-from PyQt4.QtCore import SIGNAL, pyqtSignature, pyqtSignal, Qt
+from PyQt4.QtCore import SIGNAL, pyqtSlot, pyqtSignal, Qt
 from PyQt4.QtGui import QDockWidget, QIcon
 from qgis.core import QgsPoint, QgsRectangle, QgsFeatureRequest, QgsFeature
 from qgis.gui import QgsRubberBand
@@ -58,11 +58,13 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
         self.editFormButton.setIcon(icon)
 
         self.rubber = QgsRubberBand(self.iface.mapCanvas())
-        self.layer.selectionChanged.connect(self.selectionChanged)
-        self.layer.layerDeleted.connect(self.close)
 
         self.selectionChanged()
+        print "set", currentFeature
         self.listCombo.setCurrentIndex(currentFeature)
+
+        self.layer.selectionChanged.connect(self.selectionChanged)
+        self.layer.layerDeleted.connect(self.close)
 
     def closeEvent(self, e):
         self.rubber.reset()
@@ -129,26 +131,30 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
         else:
             raise NameError("feature not found")
 
-    @pyqtSignature("on_previousButton_clicked()")
-    def on_previousButton_clicked(self):
+    @pyqtSlot(name="on_previousButton_clicked")
+    def previousFeaature(self):
         i = self.listCombo.currentIndex()
         n = max(0, i-1)
         self.listCombo.setCurrentIndex(n)
+        self.saveCurrentFeature(n)
           
-    @pyqtSignature("on_nextButton_clicked()")
-    def on_nextButton_clicked(self):
+    @pyqtSlot(name="on_nextButton_clicked")
+    def nextFeature(self):
         i = self.listCombo.currentIndex()
         c = self.listCombo.count()
         n = min(i+1, c-1)
         self.listCombo.setCurrentIndex(n)
+        self.saveCurrentFeature(n)
 
-    @pyqtSignature("on_listCombo_activated(int)")
-    def on_listCombo_currentIndexChanged(self, i):
+    @pyqtSlot(int, name="on_listCombo_activated")
+    def saveCurrentFeature(self, i):
         if self.settings.value("saveSelectionInProject"):
+            print "save", self.layer.id(), i
             self.layer.setCustomProperty("itemBrowserCurrentItem", i)
 
-    @pyqtSignature("on_listCombo_currentIndexChanged(int)")
+    @pyqtSlot(int, name="on_listCombo_currentIndexChanged")
     def on_listCombo_currentIndexChanged(self, i):
+        print "current index:", self.layer.id(), i
         feature = self.getCurrentItem()
         if feature is None: 
             return
@@ -166,7 +172,7 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
         # emit signal
         self.layer.emit(SIGNAL("browserCurrentItem(long)"), feature.id())
           
-    @pyqtSignature("on_panCheck_stateChanged(int)")
+    @pyqtSlot(int, name="on_panCheck_stateChanged")
     def on_panCheck_stateChanged(self, i):
         if self.panCheck.isChecked():
             self.scaleCheck.setEnabled(True)
@@ -177,7 +183,7 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
         else:
             self.scaleCheck.setEnabled(False)
                
-    @pyqtSignature("on_scaleCheck_stateChanged(int)")
+    @pyqtSlot(int, name="on_scaleCheck_stateChanged")
     def on_scaleCheck_stateChanged(self, i):
         if self.scaleCheck.isChecked():
             feature = self.getCurrentItem()
@@ -185,6 +191,6 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
                 return
             self.panScaleToItem(feature)
 
-    @pyqtSignature("on_editFormButton_clicked()")
-    def on_editFormButton_clicked(self):
+    @pyqtSlot(name="on_editFormButton_clicked")
+    def openFeatureForm(self):
         self.iface.openFeatureForm(self.layer, self.getCurrentItem())
