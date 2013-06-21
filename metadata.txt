@@ -1,15 +1,15 @@
 
 [general]
 name=Item Browser
-description=Browse a multiple selection with auto-zooming to feature and an option to open feature form.
-version=1.9
+description=Browse a multiple selection with highlighting of current feature.
+version=2.0
 qgisMinimumVersion=2.0
 author=Denis Rouzaud
 email=denis.rouzaud@gmail.com
 
 icon=icons/itembrowser.png
 tags=item browser, feature browser, multiple selection,browser,selection
-homepage=https://github.com/3nids/itembrowser/wiki
+homepage=http://3nids.github.io/itembrowser
 tracker=https://github.com/3nids/itembrowser/issues
 repository=https://github.com/3nids/itembrowser
 
