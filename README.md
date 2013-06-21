@@ -3,12 +3,12 @@
 ## Howto
 
 Set a layer with a multiple selection as the current layer, and the
-![plugin](https://raw.github.com/3nids/itembrowser/blob/master/icons/itembrowser.png) icon is now enabled.
+![plugin](https://raw.github.com/3nids/itembrowser/master/icons/itembrowser.png) icon is now enabled.
 
  Click on this icon, and a dock will appear on the bottom left of the application.
 You can now navigate within the selection. The plugin can auto pan and scale to the current feature.
 
-The edit form can be opened by clicking the ![form](https://raw.github.com/3nids/itembrowser/blob/master/icons/openform.png) icon.
+The edit form can be opened by clicking the ![form](https://raw.github.com/3nids/itembrowser/master/icons/openform.png) icon.
 
 In the settings, can be defined:
 * color and width of the rubber band
