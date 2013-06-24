@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_itembrowser.ui'
 #
-# Created: Thu Jun 20 14:45:34 2013
+# Created: Mon Jun 24 09:53:39 2013
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_itembrowser(object):
     def setupUi(self, itembrowser):
         itembrowser.setObjectName(_fromUtf8("itembrowser"))
-        itembrowser.resize(205, 173)
+        itembrowser.resize(233, 172)
         itembrowser.setWindowTitle(_fromUtf8("Item Browser"))
         self.dockWidgetContents = QtGui.QWidget()
         self.dockWidgetContents.setObjectName(_fromUtf8("dockWidgetContents"))
@@ -35,14 +35,6 @@ class Ui_itembrowser(object):
         self.gridLayout_2 = QtGui.QGridLayout(self.browseFrame)
         self.gridLayout_2.setMargin(6)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
-        self.currentPosLabel = QtGui.QLabel(self.browseFrame)
-        self.currentPosLabel.setToolTip(_fromUtf8(""))
-        self.currentPosLabel.setAccessibleName(_fromUtf8(""))
-        self.currentPosLabel.setAccessibleDescription(_fromUtf8(""))
-        self.currentPosLabel.setText(_fromUtf8("0/0"))
-        self.currentPosLabel.setAlignment(QtCore.Qt.AlignCenter)
-        self.currentPosLabel.setObjectName(_fromUtf8("currentPosLabel"))
-        self.gridLayout_2.addWidget(self.currentPosLabel, 0, 0, 1, 1)
         self.widget = QtGui.QWidget(self.browseFrame)
         self.widget.setObjectName(_fromUtf8("widget"))
         self.gridLayout = QtGui.QGridLayout(self.widget)
@@ -53,8 +45,9 @@ class Ui_itembrowser(object):
         self.listCombo.setAccessibleName(_fromUtf8(""))
         self.listCombo.setAccessibleDescription(_fromUtf8(""))
         self.listCombo.setEditable(True)
+        self.listCombo.setSizeAdjustPolicy(QtGui.QComboBox.AdjustToContents)
         self.listCombo.setObjectName(_fromUtf8("listCombo"))
-        self.gridLayout.addWidget(self.listCombo, 1, 1, 1, 1)
+        self.gridLayout.addWidget(self.listCombo, 1, 2, 1, 1)
         self.previousButton = QtGui.QToolButton(self.widget)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -67,7 +60,7 @@ class Ui_itembrowser(object):
         self.previousButton.setAccessibleDescription(_fromUtf8(""))
         self.previousButton.setText(_fromUtf8("<"))
         self.previousButton.setObjectName(_fromUtf8("previousButton"))
-        self.gridLayout.addWidget(self.previousButton, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.previousButton, 1, 1, 1, 1)
         self.nextButton = QtGui.QToolButton(self.widget)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -80,7 +73,15 @@ class Ui_itembrowser(object):
         self.nextButton.setAccessibleDescription(_fromUtf8(""))
         self.nextButton.setText(_fromUtf8(">"))
         self.nextButton.setObjectName(_fromUtf8("nextButton"))
-        self.gridLayout.addWidget(self.nextButton, 1, 2, 1, 1)
+        self.gridLayout.addWidget(self.nextButton, 1, 3, 1, 1)
+        self.currentPosLabel = QtGui.QLabel(self.widget)
+        self.currentPosLabel.setToolTip(_fromUtf8(""))
+        self.currentPosLabel.setAccessibleName(_fromUtf8(""))
+        self.currentPosLabel.setAccessibleDescription(_fromUtf8(""))
+        self.currentPosLabel.setText(_fromUtf8("0/0"))
+        self.currentPosLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.currentPosLabel.setObjectName(_fromUtf8("currentPosLabel"))
+        self.gridLayout.addWidget(self.currentPosLabel, 1, 0, 1, 1)
         self.gridLayout_2.addWidget(self.widget, 1, 0, 1, 1)
         self.widget_2 = QtGui.QWidget(self.browseFrame)
         self.widget_2.setObjectName(_fromUtf8("widget_2"))
@@ -102,7 +103,19 @@ class Ui_itembrowser(object):
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("../icons/edit.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.editFormButton.setIcon(icon)
         self.editFormButton.setObjectName(_fromUtf8("editFormButton"))
-        self.gridLayout_4.addWidget(self.editFormButton, 0, 2, 1, 1)
+        self.gridLayout_4.addWidget(self.editFormButton, 0, 3, 1, 1)
+        self.actionButton = QtGui.QToolButton(self.widget_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.actionButton.sizePolicy().hasHeightForWidth())
+        self.actionButton.setSizePolicy(sizePolicy)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("../icons/action.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionButton.setIcon(icon1)
+        self.actionButton.setPopupMode(QtGui.QToolButton.MenuButtonPopup)
+        self.actionButton.setObjectName(_fromUtf8("actionButton"))
+        self.gridLayout_4.addWidget(self.actionButton, 0, 2, 1, 1)
         self.gridLayout_2.addWidget(self.widget_2, 2, 0, 1, 1)
         self.gridLayout_3.addWidget(self.browseFrame, 0, 1, 1, 1)
         itembrowser.setWidget(self.dockWidgetContents)
@@ -113,4 +126,5 @@ class Ui_itembrowser(object):
     def retranslateUi(self, itembrowser):
         self.panCheck.setText(QtGui.QApplication.translate("itembrowser", "pan", None, QtGui.QApplication.UnicodeUTF8))
         self.scaleCheck.setText(QtGui.QApplication.translate("itembrowser", "scale", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionButton.setText(QtGui.QApplication.translate("itembrowser", "...", None, QtGui.QApplication.UnicodeUTF8))
 

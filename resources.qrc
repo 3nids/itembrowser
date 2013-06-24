@@ -6,6 +6,9 @@
         <file>icons/openform.png</file>
     </qresource>
     <qresource prefix="/plugins/itembrowser" >
+        <file>icons/action.png</file>
+    </qresource>
+    <qresource prefix="/plugins/itembrowser" >
         <file>icons/help.png</file>
     </qresource>
 </RCC>

@@ -26,7 +26,7 @@
 #---------------------------------------------------------------------
 
 from PyQt4.QtCore import SIGNAL, pyqtSlot, pyqtSignal, Qt
-from PyQt4.QtGui import QDockWidget, QIcon
+from PyQt4.QtGui import QDockWidget, QIcon, QAction
 from qgis.core import QgsPoint, QgsRectangle, QgsFeatureRequest, QgsFeature
 from qgis.gui import QgsRubberBand
 
@@ -56,6 +56,21 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
         self.nextButton.setArrowType(Qt.RightArrow)
         icon = QIcon(":/plugins/itembrowser/icons/openform.png")
         self.editFormButton.setIcon(icon)
+
+        # actions
+        self.attrAction = layer.actions()
+        #for i in range(attrAction.size()):
+        #    self.actionButton.addAction(attrAction[i])
+        actions = self.attrAction.listActions()
+        preferredAction = layer.customProperty("ItemBrowserPreferedAction", "")
+        if preferredAction not in actions:
+            preferredAction = self.attrAction[self.attrAction.defaultAction()].name()
+        for i, action in enumerate(actions):
+            qAction = QAction(QIcon(":/plugins/itembrowser/icons/action.png"), action.name(), self)
+            qAction.triggered.connect(lambda: self.doAction(i))
+            self.actionButton.addAction(qAction)
+            if action.name() == preferredAction:
+                self.actionButton.setDefaultAction(qAction)
 
         self.rubber = QgsRubberBand(self.iface.mapCanvas())
         self.selectionChanged()
@@ -130,6 +145,12 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
             return f
         else:
             raise NameError("feature not found")
+
+    def doAction(self, i):
+        f = self.getCurrentItem()
+        self.actionButton.setDefaultAction(self.actionButton.actions()[i])
+        self.layer.setCustomProperty("ItemBrowserPreferedAction", self.attrAction[i].name())
+        self.attrAction.doActionFeature(i, f)
 
     @pyqtSlot(name="on_previousButton_clicked")
     def previousFeaature(self):
