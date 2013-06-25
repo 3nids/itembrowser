@@ -59,9 +59,7 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
 
         # actions
         self.attrAction = layer.actions()
-        #for i in range(attrAction.size()):
-        #    self.actionButton.addAction(attrAction[i])
-        actions = self.attrAction.listActions()
+        actions = [self.attrAction[i] for i in range(self.attrAction.size())]
         preferredAction = layer.customProperty("ItemBrowserPreferedAction", "")
         if preferredAction not in actions:
             preferredAction = self.attrAction[self.attrAction.defaultAction()].name()
