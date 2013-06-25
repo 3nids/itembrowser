@@ -67,14 +67,18 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
             dfltAction = self.attrAction.defaultAction()
             if dfltAction > len(actions):
                 preferredAction = self.attrAction[dfltAction].name()
+        preferredActionFound = False
         for i, action in enumerate(actions):
             qAction = QAction(QIcon(":/plugins/itembrowser/icons/action.png"), action.name(), self)
             qAction.triggered.connect(lambda: self.doAction(i))
             self.actionButton.addAction(qAction)
             if action.name() == preferredAction:
                 self.actionButton.setDefaultAction(qAction)
+                preferredActionFound = True
         if len(actions) == 0:
             self.actionButton.setEnabled(False)
+        elif not preferredActionFound:
+            self.actionButton.setDefaultAction(self.actionButton.actions()[0])
 
         self.rubber = QgsRubberBand(self.iface.mapCanvas())
         self.selectionChanged()
