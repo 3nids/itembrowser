@@ -62,7 +62,9 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
         actions = [self.attrAction[i] for i in range(self.attrAction.size())]
         preferredAction = layer.customProperty("ItemBrowserPreferedAction", "")
         if preferredAction not in actions:
-            preferredAction = self.attrAction[self.attrAction.defaultAction()].name()
+            dfltAction = self.attrAction.defaultAction()
+            if dfltAction > len(actions):
+                preferredAction = self.attrAction[dfltAction].name()
         for i, action in enumerate(actions):
             qAction = QAction(QIcon(":/plugins/itembrowser/icons/action.png"), action.name(), self)
             qAction.triggered.connect(lambda: self.doAction(i))
