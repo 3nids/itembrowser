@@ -27,7 +27,7 @@
 
 from PyQt4.QtCore import QUrl, Qt
 from PyQt4.QtGui import QAction, QIcon, QDesktopServices
-from qgis.core import QgsMapLayer
+from qgis.core import QgsMapLayer, QgsProject
 
 from core.mysettings import MySettings
 from gui.mysettingsdialog import MySettingsDialog
@@ -61,7 +61,7 @@ class itemBrowser():
 
         self.iface.currentLayerChanged.connect(self.currentLayerChanged)
         self.iface.mapCanvas().selectionChanged.connect(self.currentLayerChanged)
-        self.iface.mapCanvas().layersChanged.connect(self.reloadSession)
+        QgsProject.instance().readProject.connect(self.reloadSession)
 
         self.currentLayerChanged(self.iface.legendInterface().currentLayer())
               

@@ -1,5 +1,9 @@
 ##  Changelog
 
+** Version 2.2** xx
+
+* Reload session after project load instance of layer changed (fix missing actions)
+
 ** Version 2.1** 25.06.2013
 
 * Layer actions can be run for current feature from the dock
