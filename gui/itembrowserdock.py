@@ -58,6 +58,8 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
         self.editFormButton.setIcon(icon)
 
         # actions
+        icon = QIcon(":/plugins/itembrowser/icons/action.png")
+        self.actionButton.setIcon(icon)
         self.attrAction = layer.actions()
         actions = [self.attrAction[i] for i in range(self.attrAction.size())]
         preferredAction = layer.customProperty("ItemBrowserPreferedAction", "")
@@ -71,6 +73,8 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
             self.actionButton.addAction(qAction)
             if action.name() == preferredAction:
                 self.actionButton.setDefaultAction(qAction)
+        if len(actions) == 0:
+            self.actionButton.setEnabled(False)
 
         self.rubber = QgsRubberBand(self.iface.mapCanvas())
         self.selectionChanged()

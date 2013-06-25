@@ -1,5 +1,9 @@
 ##  Changelog
 
+** Version 2.1** xx
+
+* Added button to run action for current feature
+
 ** Version 2.0.1** 21.06.2013
 
 * Fix help link
