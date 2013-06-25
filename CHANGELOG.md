@@ -1,8 +1,8 @@
 ##  Changelog
 
-** Version 2.1** xx
+** Version 2.1** 25.06.2013
 
-* Added button to run action for current feature
+* Layer actions can be run for current feature from the dock
 
 ** Version 2.0.1** 21.06.2013
 
