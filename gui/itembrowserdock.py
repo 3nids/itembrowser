@@ -86,11 +86,12 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
             self.on_listCombo_currentIndexChanged(currentFeature)
         else:
             self.listCombo.setCurrentIndex(currentFeature)
-        self.layer.selectionChanged.connect(self.selectionChanged)
         self.layer.layerDeleted.connect(self.close)
+        self.layer.selectionChanged.connect(self.selectionChanged)
 
     def closeEvent(self, e):
         self.rubber.reset()
+        self.layer.layerDeleted.disconnect(self.close)
         self.layer.selectionChanged.disconnect(self.selectionChanged)
         if self.settings.value("saveSelectionInProject"):
             self.layer.setCustomProperty("itemBrowserSelection", repr([]))
