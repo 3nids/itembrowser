@@ -1,19 +1,19 @@
 ##  Changelog
 
-** Version 2.1.1** 27.06.2013
+**Version 2.1.1** 27.06.2013
 
 * Reload session after project load instance of layer changed (fix missing actions)
 * Fix: disconnect properly the layer
 
-** Version 2.1** 25.06.2013
+**Version 2.1** 25.06.2013
 
 * Layer actions can be run for current feature from the dock
 
-** Version 2.0.1** 21.06.2013
+**Version 2.0.1** 21.06.2013
 
 * Fix help link
 
-** Version 2.0** 20.06.2013
+**Version 2.0** 20.06.2013
 
 * New workflow: an icon is enabled as soon as the current layer has a multiple selection. Clicking this icon shows the dock to browse the selection.
 * Updated to new API
