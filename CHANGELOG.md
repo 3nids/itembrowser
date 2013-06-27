@@ -1,8 +1,9 @@
 ##  Changelog
 
-** Version 2.2** xx
+** Version 2.1.1** 27.06.2013
 
 * Reload session after project load instance of layer changed (fix missing actions)
+* Fix: disconnect properly the layer
 
 ** Version 2.1** 25.06.2013
 
