@@ -1,5 +1,9 @@
 ##  Changelog
 
+#### Version 2.2 11.07.2013
+
+* Add option to specify dock area
+
 ##### Version 2.1.1 27.06.2013
 
 * Reload session after project load instance of layer changed (fix missing actions)
