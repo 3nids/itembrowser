@@ -36,6 +36,7 @@ class MySettings(SettingManager):
         SettingManager.__init__(self, pluginName)
 
         # global settings
+        self.addSetting("dockArea", "integer", "global", 0)  # 0: right, 1: left
         self.addSetting("saveSelectionInProject", "bool", "global", True)
         self.addSetting("scale", "integer", "global", 4)
         self.addSetting("rubberWidth", "double", "global", 2)

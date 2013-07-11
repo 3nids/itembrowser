@@ -88,7 +88,10 @@ class itemBrowser():
             return
         dock = ItemBrowserDock(self.iface, layer, currentFeature)
         dock.dockRemoved.connect(self.dockRemoved)
-        self.iface.addDockWidget(Qt.LeftDockWidgetArea, dock)
+        if self.settings.value("dockArea") == 1:
+            self.iface.addDockWidget(Qt.RightDockWidgetArea, dock)
+        else:
+            self.iface.addDockWidget(Qt.LeftDockWidgetArea, dock)
         self.docks[layer.id()] = dock
 
     def dockRemoved(self, layerid):
