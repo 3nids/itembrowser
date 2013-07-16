@@ -1,14 +1,8 @@
 <RCC>
     <qresource prefix="/plugins/itembrowser" >
-        <file>icons/itembrowser.png</file>
-    </qresource>
-    <qresource prefix="/plugins/itembrowser" >
-        <file>icons/openform.png</file>
-    </qresource>
-    <qresource prefix="/plugins/itembrowser" >
-        <file>icons/action.png</file>
-    </qresource>
-    <qresource prefix="/plugins/itembrowser" >
-        <file>icons/help.png</file>
+        <file>icons/itembrowser.svg</file>
+        <file>icons/openform.svg</file>
+        <file>icons/action.svg</file>
+        <file>icons/help.svg</file>
     </qresource>
 </RCC>

@@ -166,7 +166,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>../icons/edit.png</normaloff>../icons/edit.png</iconset>
+              <normaloff>../icons/openform.svg</normaloff>../icons/openform.svg</iconset>
             </property>
            </widget>
           </item>
@@ -183,7 +183,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>../icons/action.png</normaloff>../icons/action.png</iconset>
+              <normaloff>../icons/action.svg</normaloff>../icons/action.svg</iconset>
             </property>
             <property name="popupMode">
              <enum>QToolButton::MenuButtonPopup</enum>

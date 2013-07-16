@@ -54,11 +54,11 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
 
         self.previousButton.setArrowType(Qt.LeftArrow)
         self.nextButton.setArrowType(Qt.RightArrow)
-        icon = QIcon(":/plugins/itembrowser/icons/openform.png")
+        icon = QIcon(":/plugins/itembrowser/icons/openform.svg")
         self.editFormButton.setIcon(icon)
 
         # actions
-        icon = QIcon(":/plugins/itembrowser/icons/action.png")
+        icon = QIcon(":/plugins/itembrowser/icons/action.svg")
         self.actionButton.setIcon(icon)
         self.attrAction = layer.actions()
         actions = [self.attrAction[i] for i in range(self.attrAction.size())]
@@ -69,7 +69,7 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
                 preferredAction = self.attrAction[dfltAction].name()
         preferredActionFound = False
         for i, action in enumerate(actions):
-            qAction = QAction(QIcon(":/plugins/itembrowser/icons/action.png"), action.name(), self)
+            qAction = QAction(QIcon(":/plugins/itembrowser/icons/action.svg"), action.name(), self)
             qAction.triggered.connect(lambda: self.doAction(i))
             self.actionButton.addAction(qAction)
             if action.name() == preferredAction:

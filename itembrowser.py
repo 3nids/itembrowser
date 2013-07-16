@@ -44,7 +44,7 @@ class itemBrowser():
 
     def initGui(self):
         # browse action
-        self.browserAction = QAction(QIcon(":/plugins/itembrowser/icons/itembrowser.png"),
+        self.browserAction = QAction(QIcon(":/plugins/itembrowser/icons/itembrowser.svg"),
                                      "Browse selected items of current layer", self.iface.mainWindow())
         self.browserAction.setEnabled(False)
         self.browserAction.triggered.connect(lambda(x): self.openBrowserDock())  # prevent passing "False" to the method
@@ -55,7 +55,7 @@ class itemBrowser():
         self.uisettingsAction.triggered.connect(self.showSettings)
         self.iface.addPluginToMenu("&Item Browser", self.uisettingsAction)     
         # help
-        self.helpAction = QAction(QIcon(":/plugins/itembrowser/icons/help.png"), "Help", self.iface.mainWindow())
+        self.helpAction = QAction(QIcon(":/plugins/itembrowser/icons/help.svg"), "Help", self.iface.mainWindow())
         self.helpAction.triggered.connect(lambda: QDesktopServices().openUrl(QUrl("http://3nids.github.io/itembrowser")))
         self.iface.addPluginToMenu("&Item Browser", self.helpAction)
 
