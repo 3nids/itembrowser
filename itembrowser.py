@@ -51,7 +51,8 @@ class itemBrowser():
         self.iface.addToolBarIcon(self.browserAction)
         self.iface.addPluginToMenu("&Item Browser", self.browserAction)
         # settings
-        self.uisettingsAction = QAction("settings", self.iface.mainWindow())
+        self.uisettingsAction = QAction(QIcon(":/plugins/itembrowser/icons/settings.svg"), "settings",
+                                        self.iface.mainWindow())
         self.uisettingsAction.triggered.connect(self.showSettings)
         self.iface.addPluginToMenu("&Item Browser", self.uisettingsAction)     
         # help
