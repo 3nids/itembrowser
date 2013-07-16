@@ -8,7 +8,7 @@ author=Denis Rouzaud
 email=denis.rouzaud@gmail.com
 
 icon=icons/itembrowser.svg
-tags=item browser, feature browser, multiple selection,browser,selection
+tags=item,browser,feature, multiple,selection
 homepage=http://3nids.github.io/itembrowser
 tracker=https://github.com/3nids/itembrowser/issues
 repository=https://github.com/3nids/itembrowser
