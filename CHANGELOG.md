@@ -1,5 +1,9 @@
 ##  Changelog
 
+#### Version 2.3 16.07.2013
+
+* New set of SVG icons
+
 #### Version 2.2 11.07.2013
 
 * Add option to specify dock area
