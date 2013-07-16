@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_settings.ui'
 #
-# Created: Thu Jul 11 08:13:37 2013
+# Created: Tue Jul 16 14:03:17 2013
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -72,7 +72,7 @@ class Ui_Settings(object):
         QtCore.QMetaObject.connectSlotsByName(Settings)
 
     def retranslateUi(self, Settings):
-        Settings.setWindowTitle(QtGui.QApplication.translate("Settings", "Triangulation :: settings", None, QtGui.QApplication.UnicodeUTF8))
+        Settings.setWindowTitle(QtGui.QApplication.translate("Settings", "Item Browser :: settings", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("Settings", "Rubberband size", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("Settings", "Rubberband color", None, QtGui.QApplication.UnicodeUTF8))
         self.saveSelectionInProject.setText(QtGui.QApplication.translate("Settings", "save selection in project", None, QtGui.QApplication.UnicodeUTF8))
