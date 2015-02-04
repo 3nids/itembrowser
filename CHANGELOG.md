@@ -1,5 +1,11 @@
 ##  Changelog
 
+#### Version 2.4 04.02.2015
+
+* Use display expression in the combo box
+* Small UI improvements
+* New Makefile
+
 #### Version 2.3 16.07.2013
 
 * New set of SVG icons
