@@ -105,10 +105,12 @@ class itemBrowser():
             exec("selection = %s" % layer.customProperty("itemBrowserSelection", "[]"))
             if len(selection) > 0:
                 currentFeature = long(layer.customProperty("itemBrowserCurrentItem", 0))
+                layer.setSelectedFeatures(selection)
+                if len(layer.selectedFeaturesIds()) < 1:
+                    return
                 if layer.id() in self.docks:
-                    self.docks[layer.id()].listCombo.setCurrentIndex(currentFeature)
+                    self.docks[layer.id()].setCurrentItem(currentFeature)
                 else:
-                    layer.setSelectedFeatures(selection)
                     self.openBrowserDock(layer, currentFeature)
 
     def showSettings(self):

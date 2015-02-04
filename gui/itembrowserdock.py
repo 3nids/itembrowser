@@ -27,7 +27,7 @@
 
 from PyQt4.QtCore import SIGNAL, pyqtSlot, pyqtSignal, Qt
 from PyQt4.QtGui import QDockWidget, QIcon, QAction
-from qgis.core import QgsPoint, QgsRectangle, QgsFeatureRequest, QgsFeature
+from qgis.core import QgsPoint, QgsRectangle, QgsFeatureRequest, QgsFeature, QgsExpression
 from qgis.gui import QgsRubberBand
 
 from ..core.mysettings import MySettings
@@ -91,8 +91,14 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
 
     def closeEvent(self, e):
         self.rubber.reset()
-        self.layer.layerDeleted.disconnect(self.close)
-        self.layer.selectionChanged.disconnect(self.selectionChanged)
+        try:
+            self.layer.layerDeleted.disconnect(self.close)
+        except TypeError:
+            pass
+        try:
+            self.layer.selectionChanged.disconnect(self.selectionChanged)
+        except TypeError:
+            pass
         if self.settings.value("saveSelectionInProject"):
             self.layer.setCustomProperty("itemBrowserSelection", repr([]))
         self.dockRemoved.emit(self.layer.id())
@@ -106,11 +112,20 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
             self.layer.emit(SIGNAL("browserNoItem()"))
             return
         self.browseFrame.setEnabled(True)
-        self.subset = self.layer.selectedFeaturesIds()
+        subset = self.layer.selectedFeaturesIds()
         if self.settings.value("saveSelectionInProject"):
-            self.layer.setCustomProperty("itemBrowserSelection", repr(self.subset))
-        for fid in self.subset:
-            self.listCombo.addItem("%u" % fid)
+            self.layer.setCustomProperty("itemBrowserSelection", repr(subset))
+
+        f = QgsFeature()
+        title = QgsExpression(self.layer.displayExpression())
+        title.prepare(self.layer.pendingFields())
+        iterator = self.layer.getFeatures(QgsFeatureRequest().setFilterFids(subset))
+        while iterator.nextFeature(f):
+            result = title.evaluate(f)
+            if title.hasEvalError():
+                self.listCombo.addItem("%u" % f.id(), f.id())
+            else:
+                self.listCombo.addItem("%s" % result, f.id())
 
     def cleanBrowserFields(self):
         self.currentPosLabel.setText('0/0')
@@ -150,10 +165,14 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
         if i == -1:
             return None
         f = QgsFeature()
-        if self.layer.getFeatures(QgsFeatureRequest().setFilterFid(self.subset[i])).nextFeature(f):
+        if self.layer.getFeatures(QgsFeatureRequest().setFilterFid(self.listCombo.itemData(i))).nextFeature(f):
             return f
         else:
             raise NameError("feature not found")
+
+    def setCurrentItem(self, featureId):
+        idx = self.listCombo.findText("%u" % featureId)
+        self.listCombo.setCurrentIndex(idx)
 
     def doAction(self, i):
         f = self.getCurrentItem()
@@ -196,7 +215,7 @@ class ItemBrowserDock(QDockWidget, Ui_itembrowser):
         # scale to feature
         self.panScaleToItem(feature)
         # Update browser
-        self.currentPosLabel.setText("%u/%u" % (i+1, len(self.subset)))
+        self.currentPosLabel.setText("%u/%u" % (i+1, self.listCombo.count()))
         # emit signal
         self.layer.emit(SIGNAL("browserCurrentItem(long)"), feature.id())
           
