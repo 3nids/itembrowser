@@ -2,8 +2,9 @@
 [general]
 name=Item Browser
 description=Browse a multiple selection with highlighting of current feature.
-version=2.4
-qgisMinimumVersion=2.0
+about=Browse a multiple selection with highlighting of current feature.
+version=2.5
+qgisMinimumVersion=2.6
 author=Denis Rouzaud
 email=denis.rouzaud@gmail.com
 

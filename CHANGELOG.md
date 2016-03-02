@@ -1,5 +1,9 @@
 ##  Changelog
 
+#### Version 2.5 04.02.2015
+
+* Allow transparency for rubber band
+
 #### Version 2.4 04.02.2015
 
 * Use display expression in the combo box

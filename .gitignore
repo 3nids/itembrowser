@@ -4,4 +4,5 @@ tmp/
 ui_*.py
 resources.py
 *.qm
-
+*.zip
+*_rc.py
