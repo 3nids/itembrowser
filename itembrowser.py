@@ -64,7 +64,7 @@ class itemBrowser():
         self.iface.mapCanvas().selectionChanged.connect(self.currentLayerChanged)
         QgsProject.instance().readProject.connect(self.reloadSession)
 
-        self.currentLayerChanged(self.iface.legendInterface().currentLayer())
+        self.currentLayerChanged(self.iface.activeLayer())
               
     def unload(self):
         self.iface.removePluginMenu("&Item Browser", self.browserAction)

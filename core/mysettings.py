@@ -40,5 +40,5 @@ class MySettings(SettingManager):
         self.addSetting("saveSelectionInProject", "bool", "global", True)
         self.addSetting("scale", "integer", "global", 4)
         self.addSetting("rubberWidth", "double", "global", 2)
-        self.addSetting("rubberColor", "color", "global", QColor(255, 0, 0))
+        self.addSetting("rubberColor", "color", "global", QColor(255, 0, 0, 150), options={'allowAlpha': True})
 
